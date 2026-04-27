@@ -32,39 +32,61 @@ require_once "../conexao.php";
     </nav>
   </aside>
 
-  <main class="main-content" style="align-items: flex-start;">
-    <div class="card-formulario-largo">
+  <main class="main-content">
+    <div class="card-formulario">
       <h1>Adicionar Novo Livro</h1>
-      
       <form action="" method="POST" enctype="multipart/form-data">
-        
-        <div class="layout-colunas">
-          
-          <div class="coluna-form" style="align-items: center;">
-            <p class="label-secao">📸 Capa do Livro</p>
-            <div class="area-upload" style="margin: 0; width: 100%; max-width: 250px; height: 350px;">
-              <input type="file" id="imagem_livro" name="imagem_livro" accept="image/*" onchange="mostrarPreview(event)" required />
-              <div class="conteudo-upload" id="texto-upload">
-                <span style="font-size: 0.9rem; font-weight: 700;">Adicionar imagem</span>
-              </div>
-              <img id="preview" class="preview-img" alt="Capa" />
-            </div>
+        <div class="area-upload">
+          <input type="file" id="imagem_livro" accept="image/*" onchange="mostrarPreview(event)" required />
+          <div class="conteudo-upload" id="texto-upload">
+            <span style="font-size: 0.9rem; font-weight: 700;">Adicionar imagem</span>
           </div>
+          <img id="preview" class="preview-img" alt="Capa" />
+        </div>
 
-          <div class="coluna-form">
-            <p class="label-secao">📖 Informações do Livro</p>
-            <div class="grid-form">
-              <div class="grupo-campo linha-completa">
-                <label>Título</label>
-                <input type="text" name="titulo" placeholder="Ex: O Senhor dos Anéis" required />
-              </div>
-              <div class="grupo-campo linha-completa">
-                <label>Autor</label>
-                <input type="text" name="autor" placeholder="Ex: J.R.R. Tolkien" required />
-              </div>
-              <div class="grupo-campo">
-                <label>Editora</label>
-                <input type="text" name="editora" placeholder="Ex: HarperCollins" required />
-              </div>
-              <div class="grupo-campo">
-                <label>Quantidade Disponível</label>
+        <p class="label-secao">📖 Informações do Livro</p>
+        <div class="grid-form">
+          <div class="grupo-campo linha-completa">
+            <label>Título</label>
+            <input type="text" placeholder="Ex: O Senhor dos Anéis" required />
+          </div>
+          <div class="grupo-campo">
+            <label>Autor</label>
+            <input type="text" placeholder="Ex: J.R.R. Tolkien" required />
+          </div>
+          <div class="grupo-campo">
+            <label>Editora</label>
+            <input type="text" placeholder="Ex: HarperCollins" required />
+          </div>
+          <div class="grupo-campo">
+            <label>Quantidade Disponível</label>
+            <input type="number" placeholder="Ex: 9" min="0" required />
+          </div>
+        </div>
+
+        <div class="form-footer" style="margin-top: 2rem;">
+          <a class="link-rodape" href="listar_livros.html">← Voltar ao Catálogo</a>
+          <button type="submit" class="btn-primario">Adicionar Livro</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    function mostrarPreview(event) {
+      var input = event.target;
+      var preview = document.getElementById('preview');
+      var textoUpload = document.getElementById('texto-upload');
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          preview.src = e.target.result;
+          preview.style.display = 'block';   
+          textoUpload.style.display = 'none'; 
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+  </script>
+</body>
+</html>
