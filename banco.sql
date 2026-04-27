@@ -36,3 +36,17 @@ create table estoque (
     foreign key (livro_id)
     references livro(id_livro)
     );
+
+insert into usuario (nome_usuario, senha, email, tipo) values(
+'adm',
+'$2y$10$ohhQiLo3tTuc.LtonkoGKepsyg84OVvzXe3sxH0r6crmDhHac1zqG',
+'adm@adm',
+'adm'
+);
+
+insert into usuario (nome_usuario, senha, email, tipo) values(
+'user',
+'$2y$10$ohhQiLo3tTuc.LtonkoGKepsyg84OVvzXe3sxH0r6crmDhHac1zqG',
+'email@email',
+'user'
+);

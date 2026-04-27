@@ -88,144 +88,70 @@ $results = mysqli_query($conexao, $sqlcurform);
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Módulo — Admin | EAD SENAI</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: { extend: { colors: { senai: { red:'#C0392B', blue:'#34679A', 'blue-dark':'#2C5A85', orange:'#E67E22', green:'#27AE60' } } } }
-        }
-    </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .nav-link { display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:6px; font-size:13px; cursor:pointer; transition:background .15s; color:#cbd5e1; }
-        .nav-link:hover { background:rgba(255,255,255,.08); color:#fff; }
-        .nav-link.active { background:rgba(255,255,255,.15); color:#fff; font-weight:600; }
-        .form-input { width:100%; border:1px solid #d1d5db; border-radius:8px; padding:10px 14px; font-size:14px; outline:none; transition:border .15s; }
-        .form-input:focus { border-color:#34679A; box-shadow:0 0 0 3px rgba(52,103,154,.15); }
-        .form-label { display:block; font-size:12px; font-weight:600; color:#6b7280; margin-bottom:6px; text-transform:uppercase; letter-spacing:.05em; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adicionar Livro — Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
 </head>
-<body class="bg-gray-100 min-h-screen flex">
-    <main class="flex-1 flex flex-col">
-        <div class="bg-white border-b border-gray-200 px-6 py-4">
-            <div class="flex items-center gap-2 text-xs text-gray-400 mb-1">
-                <a href="cursos.php" class="hover:text-senai-blue">Cursos</a> ›
-                <a href="modulos.php" class="hover:text-senai-blue">Módulos</a> ›
-                <span class="text-gray-700 font-semibold">Editar Módulo</span>
-            </div>
-            <h1 class="text-xl font-extrabold text-gray-800">Editar Módulo</h1>
+<body>
+ 
+
+  <main class="main-content">
+    <div class="card-formulario">
+      <h1>Adicionar Novo Livro</h1>
+      <form action="" method="POST" enctype="multipart/form-data">
+        <div class="area-upload">
+          <input type="file" id="imagem_livro" accept="image/*" onchange="mostrarPreview(event)" required />
+          <div class="conteudo-upload" id="texto-upload">
+            <span style="font-size: 0.9rem; font-weight: 700;">Adicionar imagem</span>
+          </div>
+          <img id="preview" class="preview-img" alt="Capa" />
         </div>
-        <div class="p-6 flex-1 max-w-xl">
-            <div class="bg-white rounded-xl shadow-sm p-6">
-                <form action="cadastro.php" method="post">
 
-                <div class="mb-5">
-                        <span class="block mb-2 font-semibold text-gray-700">Imagem de Capa</span>
-                        
-                        <label for="input-imagem" class="block border-2 border-dashed border-gray-300 rounded-xl p-5 text-center hover:border-blue-500 transition cursor-pointer bg-gray-50">
-                            
-                            <div class="bg-gradient-to-br from-blue-500 to-blue-700 w-32 h-20 rounded-lg mx-auto mb-3 flex items-center justify-center overflow-hidden">
-                                
-                                <img id="img-preview" 
-                                    src="uploads/<?= htmlspecialchars($nomeImagem ?? '') ?>" 
-                                    alt="Pré-visualização da capa"
-                                    class="<?= !empty($nomeImagem) ? '' : 'hidden' ?> w-full h-full object-cover">
-                                
-                                <span id="placeholder-text" 
-                                class="<?= !empty($nomeImagem) ? 'hidden' : '' ?> text-3xl text-white">
-                                
-                                    <img id="imgedit" 
-                                    src="uploads/<?= htmlspecialchars($editando["imagem"] ?? '') ?>"
-                                    alt="Pré-visualização da capa"
-                                    class="<?= !empty($editando["imagem"]) ? '' : 'hidden' ?> w-full h-full object-cover">
-                                </span>
-                                
-                            </div>
-
-                            <input type="file" name="imagem" id="input-imagem" accept="image/*" class="hidden" onchange="previewFile()">
-                            
-                            <p class="text-xs text-gray-500">Clique para selecionar uma nova imagem</p>
-                        </label>
-                    </div>
-
-                    <script>
-                    /**
-                    * Reads the selected file and updates the preview image on the fly.
-                    */
-                    function previewFile() {
-                        const fileInput = document.getElementById('input-imagem');
-                        const previewImg = document.getElementById('img-preview');
-                        const placeholderTxt = document.getElementById('placeholder-text');
-
-                        // Check if a file was actually selected
-                        if (fileInput.files && fileInput.files[0]) {
-                            const file = fileInput.files[0];
-                            
-                            // Create a temporary URL for the selected image
-                            const imgUrl = URL.createObjectURL(file);
-                            
-                            // Update the image src and show it
-                            previewImg.src = imgUrl;
-                            previewImg.classList.remove('hidden');
-                            
-                            // Hide the placeholder text/initials
-                            placeholderTxt.classList.add('hidden');
-                            
-                            // Optional: Clean up the URL object after the image loads to free memory
-                            previewImg.onload = function() {
-                                URL.revokeObjectURL(previewImg.src);
-                            }
-                        }
-                    }
-                    </script>
-
-                    <div class="mb-4">
-                        <label class="form-label">Título do livro *</label>
-                        <input type="text" name="nome_livro" class="form-input">
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="form-label">Autor *</label>
-                        <input type="text" name="autor" class="form-input">
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="form-label">publicado *</label>
-                        <input type="text" name="publicado" class="form-input">
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="form-label">quantidade *</label>
-                        <input type="number" name="quantidade_livro" class="form-input">
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="form-label">preço *</label>
-                        <input type="number" name="preco_livro" class="form-input">
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="form-label">Genêro *</label>
-                        <input type="text" name="genero" class="form-input">
-                    </div>
-
-
-                    <div class="mb-4">
-                        <label class="form-label">Descrição (opcional)</label>
-                        <textarea name="descricao_livro" rows="3" class="form-input resize-none"></textarea>
-                    </div>
-
-                    <div class="flex gap-2">
-                        <button type="submit" class="bg-senai-blue text-white font-bold px-5 py-2.5 rounded-lg text-sm hover:bg-senai-blue-dark transition">💾 criar modulo</button>
-                        <a href="cadastro.php" class="bg-gray-100 text-gray-600 font-semibold px-5 py-2.5 rounded-lg text-sm hover:bg-gray-200 transition">Cancelar</a>
-                    </div>
-
-                </form>
-            </div>
+        <p class="label-secao">📖 Informações do Livro</p>
+        <div class="grid-form">
+          <div class="grupo-campo linha-completa">
+            <label>Título</label>
+            <input type="text" placeholder="Ex: O Senhor dos Anéis" required />
+          </div>
+          <div class="grupo-campo">
+            <label>Autor</label>
+            <input type="text" placeholder="Ex: J.R.R. Tolkien" required />
+          </div>
+          <div class="grupo-campo">
+            <label>Editora</label>
+            <input type="text" placeholder="Ex: HarperCollins" required />
+          </div>
+          <div class="grupo-campo">
+            <label>Quantidade Disponível</label>
+            <input type="number" placeholder="Ex: 9" min="0" required />
+          </div>
         </div>
-    </main>
+
+        <div class="form-footer" style="margin-top: 2rem;">
+          <a class="link-rodape" href="listar_livros.html">← Voltar ao Catálogo</a>
+          <button type="submit" class="btn-primario">Adicionar Livro</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    function mostrarPreview(event) {
+      var input = event.target;
+      var preview = document.getElementById('preview');
+      var textoUpload = document.getElementById('texto-upload');
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          preview.src = e.target.result;
+          preview.style.display = 'block';   
+          textoUpload.style.display = 'none'; 
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+  </script>
 </body>
 </html>
