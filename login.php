@@ -9,8 +9,11 @@ session_start();
 
 // Se já está logado, redireciona para o dashboard
 if (isset($_SESSION["id_usuario"])) {
+    if ($_SESSION["usuario_tipo"] == 'user'){
     header("Location: cadastro_usuario.php");
-    exit;
+    }else if ($_SESSION["usuario_tipo"] == 'adm'){
+    header("Location: admin/cadastro_libro.php");
+    }exit;
 }
 
 // Incluir o arquivo de conexão com o banco
@@ -39,10 +42,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION["id_usuario"] = $usuario["id_usuario"];
             $_SESSION["nome_usuario"] = $usuario["nome_usuario"];
             $_SESSION["email_usuario"] = $usuario["email"];
+            $_SESSION["usuario_tipo"] = $usuario["tipo"];
+
 
             // Redirecionar para o dashboard
+            if ($_SESSION["usuario_tipo"] == 'user'){
             header("Location: cadastro_usuario.php");
-            exit;
+            }else if ($_SESSION["usuario_tipo"] == 'adm'){
+            header("Location: admin/cadastro_libro.php");
+            }exit;
         } else {
             $erro = "Email ou senha incorretos.";
         }

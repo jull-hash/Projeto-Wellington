@@ -95,7 +95,7 @@ $lista_usuarios = mysqli_query($conexao, "SELECT * FROM usuario ORDER BY id_usua
             <div class="user-avatar">👤</div>
             <div class="user-info">
                 <div class="label">Logado como</div>
-                <div class="name"><?php echo htmlspecialchars($_SESSION["usuario_nome"]); ?></div>
+                <div class="name"><?php echo htmlspecialchars($_SESSION["nome_usuario"]); ?></div>
             </div>
         </div>
     </aside>

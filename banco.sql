@@ -5,6 +5,7 @@ create table usuario (
 id_usuario int auto_increment primary key,
 imagem_usuario varchar(255),
 nome_usuario varchar(100) not null,
+senha varchar(255) not null,
 endereco varchar(255),
 email varchar(255) not null,
 telefone varchar(12),
