@@ -10,7 +10,7 @@ endereco varchar(255),
 email varchar(255) not null,
 telefone varchar(12),
 user_criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
-tipo enum('user','adm') not null default 'aluno'
+tipo enum('user','adm') not null default 'user'
 );
 
 create table livro (
@@ -23,27 +23,13 @@ preco_livro decimal(10,2) not null,
 imagem_livro varchar(255),
 descricao_livro text,
 quantidade_livro int default (0),
-prod_criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
+livro_criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-create table produto (
-id_produto int auto_increment primary key,
-nome_produto varchar(100) not null,
-preco_produto decimal(10,2) not null,
-imagem_produto varchar(255),
-quantidade_produto int default (0),
-prod_criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
-);
 
 create table estoque (
     id_estoque int auto_increment primary key,
     nome_estoque varchar(100) not null,
-    
-    
-    produto_id INT, 
-    CONSTRAINT fk_produto_guardar 
-    FOREIGN KEY (produto_id) 
-    REFERENCES produto(id_produto),
     
     livro_id int,
     constraint fk_livro_guardar

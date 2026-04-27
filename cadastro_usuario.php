@@ -1,6 +1,8 @@
 <?php
 
 session_start();
+
+require_once "include/menu_user.php";
 require_once "conexao.php";
 
 $sucesso  = "";

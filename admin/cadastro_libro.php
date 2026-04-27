@@ -80,7 +80,7 @@ $sqlcurform = "SELECT * FROM livro WHERE nome_livro = '$nome_livro'";
     }
         }
     
-$sqlcurform = "SELECT id_livro,nome_livro, autor, publicado, genero, preco_livro, imagem_livro, descricao_livro, quantidade_livro, prod_criado_em FROM livro ORDER BY id_livro DESC";
+$sqlcurform = "SELECT id_livro,nome_livro, autor, publicado, genero, preco_livro, imagem_livro, descricao_livro, quantidade_livro, livro_criado_em FROM livro ORDER BY id_livro DESC";
 $results = mysqli_query($conexao, $sqlcurform);
 
 ?>

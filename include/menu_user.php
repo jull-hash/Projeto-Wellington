@@ -1,3 +1,12 @@
+<?php
+if (isset($_SESSION["id_usuario"])) {
+    if ($_SESSION["usuario_tipo"] == 'adm'){
+        header("Location: admin/cadastro_libro.php");
+        }
+    }else{
+        header("Location: login.php");
+    }
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
