@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "include/menu_adm.php";
+
 
 require_once "../conexao.php";
 
@@ -9,63 +9,62 @@ require_once "../conexao.php";
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Módulo — Admin | EAD SENAI</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: { extend: { colors: { senai: { red:'#C0392B', blue:'#34679A', 'blue-dark':'#2C5A85', orange:'#E67E22', green:'#27AE60' } } } }
-        }
-    </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .nav-link { display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:6px; font-size:13px; cursor:pointer; transition:background .15s; color:#cbd5e1; }
-        .nav-link:hover { background:rgba(255,255,255,.08); color:#fff; }
-        .nav-link.active { background:rgba(255,255,255,.15); color:#fff; font-weight:600; }
-        .form-input { width:100%; border:1px solid #d1d5db; border-radius:8px; padding:10px 14px; font-size:14px; outline:none; transition:border .15s; }
-        .form-input:focus { border-color:#34679A; box-shadow:0 0 0 3px rgba(52,103,154,.15); }
-        .form-label { display:block; font-size:12px; font-weight:600; color:#6b7280; margin-bottom:6px; text-transform:uppercase; letter-spacing:.05em; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adicionar Livro — Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
 </head>
-<body class="bg-gray-100 min-h-screen flex">
-    <main class="flex-1 flex flex-col">
-        <div class="bg-white border-b border-gray-200 px-6 py-4">
-            <div class="flex items-center gap-2 text-xs text-gray-400 mb-1">
-                <a href="cursos.php" class="hover:text-senai-blue">Cursos</a> ›
-                <a href="modulos.php" class="hover:text-senai-blue">Módulos</a> ›
-                <span class="text-gray-700 font-semibold">Editar Módulo</span>
+<body>
+  <aside class="sidebar">
+    <div class="logo-container">
+      <h2>Painel<br>Admin</h2>
+    </div>
+    <nav class="menu-nav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="pedidos.html">Pedidos / Vendas</a>
+      <p style="font-size: 0.8rem; font-weight: 700; color: var(--marrom-claro); margin: 1rem 0 0.2rem 1rem; text-transform: uppercase;">Catálogo</p>
+      <a href="listar_livros.html">Lista de Livros</a>
+      <a href="cadastro_livro.html" class="ativo">Adicionar Livro</a>
+      <p style="font-size: 0.8rem; font-weight: 700; color: var(--marrom-claro); margin: 1rem 0 0.2rem 1rem; text-transform: uppercase;">Sistema</p>
+      <a href="usuarios.html">Gerenciar Usuários</a>
+      <a href="../login.html" style="color: #c62828; margin-top: 1rem;">Sair</a>
+    </nav>
+  </aside>
+
+  <main class="main-content" style="align-items: flex-start;">
+    <div class="card-formulario-largo">
+      <h1>Adicionar Novo Livro</h1>
+      
+      <form action="" method="POST" enctype="multipart/form-data">
+        
+        <div class="layout-colunas">
+          
+          <div class="coluna-form" style="align-items: center;">
+            <p class="label-secao">📸 Capa do Livro</p>
+            <div class="area-upload" style="margin: 0; width: 100%; max-width: 250px; height: 350px;">
+              <input type="file" id="imagem_livro" name="imagem_livro" accept="image/*" onchange="mostrarPreview(event)" required />
+              <div class="conteudo-upload" id="texto-upload">
+                <span style="font-size: 0.9rem; font-weight: 700;">Adicionar imagem</span>
+              </div>
+              <img id="preview" class="preview-img" alt="Capa" />
             </div>
-            <h1 class="text-xl font-extrabold text-gray-800">Editar Módulo</h1>
-        </div>
-        <div class="p-6 flex-1 max-w-xl">
-            <div class="bg-white rounded-xl shadow-sm p-6">
-                <form action="cadastro.php" method="post">
+          </div>
 
-                    <div class="mb-4">
-                        <label class="form-label">Título do Módulo *</label>
-                        <input type="text" name="titulo" class="form-input">
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="form-label">Descrição (opcional)</label>
-                        <textarea name="descricao" rows="3" class="form-input resize-none"></textarea>
-                    </div>
-
-                    <div class="mb-5">
-                        <label class="form-label">Ordem</label>
-                        <input type="number" name="ordem" class="form-input" value="1" min="1">
-                    </div>
-
-                    <div class="flex gap-2">
-                        <button type="submit" class="bg-senai-blue text-white font-bold px-5 py-2.5 rounded-lg text-sm hover:bg-senai-blue-dark transition">💾 criar modulo</button>
-                        <a href="cadastro.php" class="bg-gray-100 text-gray-600 font-semibold px-5 py-2.5 rounded-lg text-sm hover:bg-gray-200 transition">Cancelar</a>
-                    </div>
-
-                </form>
-            </div>
-        </div>
-    </main>
-</body>
-</html>
+          <div class="coluna-form">
+            <p class="label-secao">📖 Informações do Livro</p>
+            <div class="grid-form">
+              <div class="grupo-campo linha-completa">
+                <label>Título</label>
+                <input type="text" name="titulo" placeholder="Ex: O Senhor dos Anéis" required />
+              </div>
+              <div class="grupo-campo linha-completa">
+                <label>Autor</label>
+                <input type="text" name="autor" placeholder="Ex: J.R.R. Tolkien" required />
+              </div>
+              <div class="grupo-campo">
+                <label>Editora</label>
+                <input type="text" name="editora" placeholder="Ex: HarperCollins" required />
+              </div>
+              <div class="grupo-campo">
+                <label>Quantidade Disponível</label>

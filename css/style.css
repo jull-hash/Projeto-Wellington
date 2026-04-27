@@ -1,0 +1,590 @@
+/* =======================================================
+   1. VARIÁVEIS E CONFIGURAÇÕES GERAIS
+======================================================= */
+:root {
+    --marrom-escuro: #4a332a;
+    --marrom-medio: #704c3a;
+    --marrom-claro: #a07b65;
+    --bg-fundo: #f3ede7;
+    --bg-card: #ffffff;
+    --bg-input: #f0ebe4;
+    --texto-principal: #3b2a22;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'PT Sans', sans-serif;
+    background-color: var(--bg-fundo);
+    color: var(--texto-principal);
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  /* =======================================================
+     2. MENU LATERAL (SIDEBAR)
+  ======================================================= */
+  .sidebar {
+    width: 250px;
+    background-color: var(--bg-fundo);
+    border-right: 1px solid rgba(0,0,0,0.05);
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 3rem;
+  }
+  
+  .logo-container h2 {
+    font-size: 1.2rem;
+    line-height: 1.1;
+    color: var(--marrom-escuro);
+  }
+  
+  .menu-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .menu-nav a {
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    font-weight: 700;
+    color: var(--marrom-escuro);
+    transition: all 0.2s;
+  }
+  
+  .menu-nav a:hover {
+    background-color: rgba(74, 51, 42, 0.05);
+  }
+  
+  .menu-nav a.ativo {
+    background-color: var(--marrom-escuro);
+    color: var(--bg-card);
+  }
+  
+  /* =======================================================
+     3. ÁREA PRINCIPAL E FORMULÁRIOS
+  ======================================================= */
+  .main-content {
+    flex: 1;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+  }
+  
+  .card-formulario {
+    background-color: var(--bg-card);
+    width: 100%;
+    max-width: 600px;
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(59, 42, 34, 0.08);
+  }
+  
+  .card-formulario h1 {
+    font-size: 1.8rem;
+    color: var(--marrom-escuro);
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .label-secao {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    color: var(--marrom-claro);
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+  }
+  
+  .divisor {
+    border: none;
+    border-top: 1px solid var(--bg-input);
+    margin: 2rem 0;
+  }
+  
+  /* Grid de Formulários */
+  .grid-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+  
+  .linha-completa {
+    grid-column: 1 / -1;
+  }
+  
+  .grupo-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  
+  .grupo-campo label {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--marrom-escuro);
+  }
+  
+  input {
+    padding: 0.8rem 1rem;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background-color: var(--bg-input);
+    font-family: 'PT Sans', sans-serif;
+    font-size: 1rem;
+    color: var(--marrom-escuro);
+    transition: all 0.2s;
+  }
+  
+  input:focus {
+    outline: none;
+    border-color: var(--marrom-claro);
+    background-color: var(--bg-card);
+    box-shadow: 0 0 0 3px rgba(160, 123, 101, 0.1);
+  }
+  
+  /* Botões */
+  .btn-primario {
+    background-color: var(--marrom-escuro);
+    color: #fff;
+    border: none;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-family: 'PT Sans', sans-serif;
+  }
+  
+  .btn-primario:hover {
+    background-color: var(--marrom-medio);
+  }
+  
+  .form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+  }
+  
+  .link-rodape {
+    font-size: 0.9rem;
+    color: var(--marrom-claro);
+    font-weight: 700;
+  }
+  
+  .link-rodape:hover {
+    color: var(--marrom-escuro);
+  }
+  
+  /* =======================================================
+     4. CEP E ENDEREÇO (ViaCEP)
+  ======================================================= */
+  .linha-cep {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+  }
+  
+  .btn-buscar-cep {
+    background-color: var(--bg-input);
+    color: var(--marrom-escuro);
+    border: none;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    height: 44px;
+    transition: background-color 0.2s;
+  }
+  
+  .btn-buscar-cep:hover {
+    background-color: #e2dacd;
+  }
+  
+  .status-cep {
+    grid-column: 1 / -1;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--marrom-medio);
+    min-height: 20px;
+    margin-top: -10px;
+  }
+  
+  /* =======================================================
+     5. MENSAGENS DE ALERTA (PHP)
+  ======================================================= */
+  .msg-alerta {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+  }
+  .msg-sucesso {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+  }
+  .msg-erro {
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #ef9a9a;
+  }
+  
+  /* =======================================================
+     6. CADASTRO DE LIVRO (UPLOAD)
+  ======================================================= */
+  .area-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 200px;
+    height: 280px;
+    margin: 0 auto 2rem;
+    border: 2px dashed var(--marrom-claro);
+    border-radius: 12px;
+    background-color: var(--bg-input);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, background-color 0.2s;
+  }
+  
+  .area-upload:hover {
+    border-color: var(--marrom-escuro);
+    background-color: var(--bg-card);
+  }
+  
+  .area-upload input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  .conteudo-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--marrom-medio);
+    pointer-events: none;
+  }
+  
+  .preview-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+  }
+  
+  /* =======================================================
+     7. DASHBOARD E TABELAS DO ADMIN
+  ======================================================= */
+  .grid-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+    margin-bottom: 3rem;
+  }
+  
+  .card-stat {
+    background-color: var(--bg-card);
+    padding: 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(59, 42, 34, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border-left: 5px solid var(--marrom-medio);
+  }
+  
+  .card-stat span {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--marrom-claro);
+    text-transform: uppercase;
+  }
+  
+  .card-stat h2 {
+    font-size: 2rem;
+    color: var(--marrom-escuro);
+  }
+  
+  .cabecalho-pagina {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    width: 100%;
+  }
+  
+  .btn-novo {
+    padding: 0.6rem 1.2rem;
+    background-color: var(--marrom-escuro);
+    color: var(--bg-card);
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: background-color 0.2s;
+  }
+  
+  .btn-novo:hover {
+    background-color: var(--marrom-medio);
+  }
+  
+  .secao-tabela {
+    width: 100%;
+    background-color: var(--bg-card);
+    padding: 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(59, 42, 34, 0.05);
+    overflow-x: auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+  }
+  
+  th {
+    text-align: left;
+    padding: 1rem;
+    border-bottom: 2px solid var(--bg-input);
+    color: var(--marrom-claro);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+  }
+  
+  td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--bg-input);
+    color: var(--marrom-escuro);
+    font-size: 0.95rem;
+    vertical-align: middle;
+  }
+  
+  .capa-miniatura {
+    width: 40px;
+    height: 55px;
+    background-color: var(--bg-input);
+    border-radius: 4px;
+    object-fit: cover;
+    display: block;
+  }
+  
+  .acoes-tabela {
+    display: flex;
+    gap: 0.8rem;
+  }
+  
+  .btn-acao {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--marrom-claro);
+    transition: color 0.2s;
+    padding: 0.2rem;
+  }
+  
+  .btn-acao:hover {
+    color: var(--marrom-escuro);
+  }
+  
+  .btn-excluir:hover {
+    color: #c62828;
+  }
+  
+  /* Badges (Status de Pedidos) */
+  .badge-status {
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .status-pendente { background-color: #fff3e0; color: #ef6c00; }
+  .status-enviado { background-color: #e3f2fd; color: #1565c0; }
+  .status-concluido { background-color: #e8f5e9; color: #2e7d32; }
+  
+  /* =======================================================
+     8. VITRINE DE LOJA (VISÃO DO USUÁRIO)
+  ======================================================= */
+  .vitrine-livros {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .card-produto {
+    background-color: var(--bg-card);
+    border: 1px solid var(--bg-input);
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+  }
+  
+  .capa-container {
+    width: 100%;
+    height: 220px;
+    background-color: var(--bg-input);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  
+  .capa-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .titulo-livro {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--marrom-escuro);
+    margin-bottom: 5px;
+  }
+  
+  .autor-livro {
+    font-size: 0.85rem;
+    color: var(--marrom-claro);
+    margin-bottom: 10px;
+  }
+  
+  .preco-livro {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--marrom-medio);
+    margin-bottom: 12px;
+  }
+  
+  .btn-comprar {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--marrom-escuro);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'PT Sans', sans-serif;
+    transition: background-color 0.2s;
+  }
+  
+  .btn-comprar:hover {
+    background-color: var(--marrom-medio);
+  }
+  
+  /* =======================================================
+     9. PERFIL DO USUÁRIO
+  ======================================================= */
+  .cabecalho-perfil {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+    gap: 1rem;
+  }
+  
+  .foto-perfil-placeholder {
+    width: 100px;
+    height: 100px;
+    background-color: var(--bg-input);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--marrom-claro);
+    border: 2px solid var(--marrom-claro);
+  }
+  
+  .info-usuario-topo {
+    text-align: center;
+  }
+  
+  .info-usuario-topo h2 {
+    color: var(--marrom-escuro);
+    font-size: 1.5rem;
+  }
+  
+  .info-usuario-topo p {
+    color: var(--marrom-claro);
+    font-size: 0.9rem;
+  }
+
+  /* =======================================================
+   10. LAYOUT WEB LADO A LADO (FORMULÁRIO LARGO)
+======================================================= */
+.card-formulario-largo {
+    background-color: var(--bg-card);
+    width: 100%;
+    max-width: 950px; /* Bem mais largo que os 600px originais */
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(59, 42, 34, 0.08);
+  }
+  
+  .card-formulario-largo h1 {
+    font-size: 1.8rem;
+    color: var(--marrom-escuro);
+    margin-bottom: 2rem;
+  }
+  
+  .layout-colunas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem; /* Espaço entre a coluna da esquerda e direita */
+  }
+  
+  .coluna-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .coluna-form .grid-form {
+    /* Como já dividimos a tela no meio, os campos internos ocupam 100% da sua coluna */
+    grid-template-columns: 1fr; 
+    gap: 1rem;
+  }
+  
+  /* Responsividade: Volta a ser 1 coluna em telas de celular */
+  @media (max-width: 850px) {
+    .layout-colunas {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }

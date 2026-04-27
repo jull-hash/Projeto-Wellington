@@ -66,235 +66,152 @@ $lista_usuarios = mysqli_query($conexao, "SELECT * FROM usuario ORDER BY id_usua
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Usuário — Projeto SENAI</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/cadastro_usuario.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro — Livraria Oliveira</title>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+  
+  <aside class="sidebar">
+    <div class="logo-container">
+      <h2>Livraria<br>Oliveira</h2>
+    </div>
+    <nav class="menu-nav">
+      <a href="loja.html">Início</a>
+      <a href="cadastro_usuario.html" class="ativo">Cadastro</a>
+      <a href="login.html">Entrar</a>
+    </nav>
+  </aside>
 
-    <!-- ── SIDEBAR ──────────────────────────────────────────────── -->
-    <aside class="sidebar">
-        <div class="sidebar-brand">
-            <h1>Projeto SENAI</h1>
-            <span>Painel de controle</span>
-        </div>
-        <nav>
-            <div class="nav-section-label">Menu</div>
-            <a href="cadastro_cliente.php"  class="nav-link"><span class="nav-icon">🤑</span> Cadastrar Cliente</a>
-            <a href="cadastro_usuario.php"  class="nav-link active"><span class="nav-icon">👤</span> Cadastrar Usuário</a>
-            <a href="cadastro_produtos.php" class="nav-link"><span class="nav-icon">📋</span> Cadastrar Produtos</a>
-            <div class="nav-section-label" style="margin-top:12px;">Sessão</div>
-            <a href="logout.php" class="nav-link"><span class="nav-icon">🚪</span> Sair</a>
-        </nav>
-        <div class="sidebar-user">
-            <div class="user-avatar">👤</div>
-            <div class="user-info">
-                <div class="label">Logado como</div>
-                <div class="name"><?php echo htmlspecialchars($_SESSION["usuario_nome"]); ?></div>
-            </div>
-        </div>
-    </aside>
-
-    <!-- ── MAIN ─────────────────────────────────────────────────── -->
-    <main>
-        <div class="page-header">
-            <h2>Cadastrar Usuário</h2>
-            <p>Preencha os dados abaixo para criar um novo usuário no sistema.</p>
-        </div>
-
-        <?php if (!empty($sucesso)): ?>
-            <div class="alert alert-success"><?php echo $sucesso; ?></div>
-        <?php endif; ?>
-        <?php if (!empty($erro)): ?>
-            <div class="alert alert-danger"><?php echo $erro; ?></div>
-        <?php endif; ?>
-
-        <div class="layout">
-
-            <!-- ── FORMULÁRIO ─────────────────────────────────── -->
-            <div class="form-col">
-                <div class="card">
-                    <div class="card-title">
-                        <?= $editando ? "Editar Usuário" : "Novo Usuário" ?>
-                    </div>
-
-                    <form method="POST" enctype="multipart/form-data">
-                        <?php if ($editando): ?>
-                            <input type="hidden" name="id_usuario" value="<?= $editando["id_usuario"] ?>">
-                        <?php endif; ?>
-
-                        <!-- Dados pessoais -->
-                        <div class="form-grid-2col">
-                            <div class="form-group">
-                                <label for="nome">Nome</label>
-                                <input type="text" id="nome" name="nome_usuario"
-                                       value="<?= htmlspecialchars($editando["nome_usuario"] ?? "") ?>"
-                                       required placeholder="Nome completo" class="form-input">
-                            </div>
-                            <div class="form-group">
-                                <label for="telefone">Contato</label>
-                                <input type="text" id="telefone" name="telefone"
-                                       value="<?= htmlspecialchars($editando["telefone"] ?? "") ?>"
-                                       required placeholder="(00) 00000-0000" class="form-input">
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" id="email" name="email"
-                                       value="<?= htmlspecialchars($editando["email"] ?? "") ?>"
-                                       required placeholder="exemplo@email.com" class="form-input">
-                            </div>
-                            <div class="form-group">
-                                <label for="senha">Senha</label>
-                                <input type="password" id="senha" name="senha"
-                                       required placeholder="••••••••" class="form-input">
-                            </div>
-                        </div>
-
-                        <hr class="section-divider">
-                        <div class="section-label">📍 Endereço</div>
-
-                        <!-- Busca de CEP: botão type="button" não submete o form -->
-                        <div class="cep-row">
-                            <div class="form-group">
-                                <label for="cep">CEP</label>
-                                <input type="text" id="cep" placeholder="00000-000"
-                                       maxlength="9" class="form-input">
-                            </div>
-                            <button type="button" class="btn-secondary" onclick="buscarCep()">
-                                🔍 Buscar
-                            </button>
-                        </div>
-                        <p id="cep-status" class="cep-status"></p>
-
-                        <!-- Campos preenchidos automaticamente pelo JS (readonly) -->
-                        <div class="form-grid-2col" style="margin-bottom:18px;">
-                            <div class="form-group span-full">
-                                <label>Rua / Logradouro</label>
-                                <input type="text" id="rua"
-                                       placeholder="Preenchido automaticamente"
-                                       class="form-input" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Bairro</label>
-                                <input type="text" id="bairro" placeholder="Bairro"
-                                       class="form-input" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Cidade / UF</label>
-                                <input type="text" id="cidade" placeholder="Cidade"
-                                       class="form-input" readonly>
-                            </div>
-
-                            <!-- Único campo de endereço salvo no banco -->
-                            <div class="form-group span-full">
-                                <label for="endereco">Número e Complemento</label>
-                                <input type="text" id="endereco" name="endereco"
-                                       value="<?= htmlspecialchars($editando["endereco"] ?? "") ?>"
-                                       placeholder="Ex: 123, Apto 4" class="form-input">
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn-primary">
-                            <?= $editando ? "💾 Salvar Alterações" : "✨ Cadastrar Usuário" ?>
-                        </button>
-                    </form>
-
-                </div>
-            </div>
-
-            <!-- ── TABELA ──────────────────────────────────────── -->
-            <div class="table-col">
-                <div class="card">
-                    <div class="card-title">Usuários Cadastrados</div>
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Nome</th>
-                                    <th>Email</th>
-                                    <th>Criado em</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php while ($u = mysqli_fetch_assoc($lista_usuarios)): ?>
-                                    <tr>
-                                        <td><span class="id-badge"><?php echo $idVisual++; ?></span></td>
-                                        <td><?php echo htmlspecialchars($u["nome_usuario"]); ?></td>
-                                        <td style="color:var(--muted)"><?php echo htmlspecialchars($u["email"]); ?></td>
-                                        <td style="color:var(--muted);font-size:0.8rem"><?php echo $u["user_criado_em"]; ?></td>
-                                        <td>
-                                            <div class="actions-cell">
-                                                <a href="delete_usuario.php?id=<?= $u['id_usuario'] ?>&tabela=usuario&pagina=cadastro_usuario.php"
-                                                   onclick="return confirm('Tem certeza que deseja excluir este usuário?');"
-                                                   class="action-link delete">🗑️ Excluir</a>
-                                                <a href="cadastro_usuario.php?editar=<?= $u['id_usuario'] ?>"
-                                                   class="action-link edit">📝 Editar</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <?php endwhile; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-        </div><!-- /.layout -->
-    </main>
-
+  <main class="main-content" style="align-items: flex-start;">
     
-    <script>
-        // Máscara automática no campo CEP
-        document.getElementById('cep').addEventListener('input', function () {
-            let v = this.value.replace(/\D/g, '').slice(0, 8);
-            if (v.length > 5) v = v.slice(0, 5) + '-' + v.slice(5);
-            this.value = v;
-        });
+    <div class="card-formulario-largo">
+      <h1>Criar uma conta</h1>
+      
+      <form action="" method="POST" onsubmit="prepararEndereco()">
+        
+        <div class="layout-colunas">
+          
+          <div class="coluna-form">
+            <p class="label-secao">👤 Dados Pessoais</p>
+            
+            <div class="grid-form">
+              <div class="grupo-campo">
+                <label>Nome Completo</label>
+                <input type="text" id="nome" placeholder="Seu nome completo" required />
+              </div>
+              <div class="grupo-campo">
+                <label>E-mail</label>
+                <input type="email" id="email" placeholder="seu@email.com" required />
+              </div>
+              <div class="grupo-campo">
+                <label>Telefone</label>
+                <input type="text" id="telefone" placeholder="(00) 00000-0000" maxlength="15" />
+              </div>
+              <div class="grupo-campo">
+                <label>Senha</label>
+                <input type="password" id="senha" placeholder="Crie uma senha segura" required />
+              </div>
+            </div>
+          </div>
 
-        // Enter no campo CEP dispara a busca
-        document.getElementById('cep').addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') { e.preventDefault(); buscarCep(); }
-        });
+          <div class="coluna-form">
+            <p class="label-secao">📍 Endereço de Entrega</p>
+            
+            <div class="grid-form">
+              <div class="linha-cep">
+                <div class="grupo-campo" style="width: 100%;">
+                  <label>CEP</label>
+                  <input type="text" id="cep" placeholder="00000-000" maxlength="9" />
+                </div>
+                <button type="button" class="btn-buscar-cep" onclick="buscarCep()">🔍 Buscar CEP</button>
+              </div>
+              <p class="status-cep" id="status-cep" style="margin-top: -5px;"></p>
 
-        // Busca o CEP na API ViaCEP e preenche os campos
-        function buscarCep() {
-            const cep    = document.getElementById('cep').value.replace(/\D/g, '');
-            const status = document.getElementById('cep-status');
+              <div class="grupo-campo">
+                <label>Rua / Logradouro</label>
+                <input type="text" id="rua" placeholder="Preenchido automaticamente" readonly />
+              </div>
+              
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="grupo-campo">
+                  <label>Bairro</label>
+                  <input type="text" id="bairro" placeholder="Bairro" readonly />
+                </div>
+                <div class="grupo-campo">
+                  <label>Cidade / UF</label>
+                  <input type="text" id="cidade" placeholder="Cidade / Estado" readonly />
+                </div>
+              </div>
 
-            if (cep.length !== 8) {
-                status.textContent = '⚠️ Digite um CEP com 8 dígitos.';
-                return;
-            }
+              <div class="grupo-campo">
+                <label>Número e Complemento</label>
+                <input type="text" id="numero_complemento" placeholder="Ex: 123, Bloco B, Apto 4" required />
+              </div>
+              <input type="hidden" id="endereco_completo" name="endereco" value="" />
+            </div>
+          </div>
 
-            status.textContent = '⏳ Buscando...';
+        </div> <div class="form-footer" style="margin-top: 3rem; border-top: 1px solid var(--bg-input); padding-top: 1.5rem;">
+          <a class="link-rodape" href="login.html">Já tem uma conta? Faça login</a>
+          <button type="submit" class="btn-primario" style="min-width: 200px;">Finalizar Cadastro</button>
+        </div>
 
-            fetch(`https://viacep.com.br/ws/${cep}/json/`)
-                .then(r => r.json())
-                .then(d => {
-                    if (d.erro) {
-                        status.textContent = '❌ CEP não encontrado.';
-                        return;
-                    }
-                    document.getElementById('rua').value    = d.logradouro ?? '';
-                    document.getElementById('bairro').value = d.bairro     ?? '';
-                    document.getElementById('cidade').value = `${d.localidade}/${d.uf}`;
-                    document.getElementById('endereco').focus();
+      </form>
+    </div>
 
-                    status.textContent = '✅ Endereço encontrado!';
-                    setTimeout(() => status.textContent = '', 3000);
-                })
-                .catch(() => {
-                    status.textContent = '❌ Erro ao conectar com ViaCEP.';
-                });
-        }
-    </script>
+  </main>
 
+  <script>
+    /* Máscara de Telefone */
+    document.getElementById('telefone').addEventListener('input', function () {
+      var v = this.value.replace(/\D/g, '').slice(0, 11);
+      if (v.length > 10) v = '(' + v.slice(0, 2) + ') ' + v.slice(2, 7) + '-' + v.slice(7);
+      else if (v.length > 6) v = '(' + v.slice(0, 2) + ') ' + v.slice(2, 6) + '-' + v.slice(6);
+      else if (v.length > 2) v = '(' + v.slice(0, 2) + ') ' + v.slice(2);
+      this.value = v;
+    });
+
+    /* Máscara de CEP */
+    document.getElementById('cep').addEventListener('input', function () {
+      var v = this.value.replace(/\D/g, '').slice(0, 8);
+      if (v.length > 5) v = v.slice(0, 5) + '-' + v.slice(5);
+      this.value = v;
+    });
+
+    document.getElementById('cep').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); buscarCep(); }
+    });
+
+    function buscarCep() {
+      var cep = document.getElementById('cep').value.replace(/\D/g, '');
+      var status = document.getElementById('status-cep');
+      if (cep.length !== 8) { status.textContent = '⚠️ Digite um CEP válido.'; return; }
+      
+      status.textContent = '⏳ Buscando endereço...';
+      
+      fetch('https://viacep.com.br/ws/' + cep + '/json/')
+        .then(res => res.json())
+        .then(dados => {
+          if (dados.erro) { status.textContent = '❌ CEP não encontrado.'; return; }
+          document.getElementById('rua').value = dados.logradouro || '';
+          document.getElementById('bairro').value = dados.bairro || '';
+          document.getElementById('cidade').value = dados.localidade + ' / ' + dados.uf;
+          document.getElementById('numero_complemento').focus();
+          status.textContent = '✅ Endereço preenchido!';
+          setTimeout(() => status.textContent = '', 3000);
+        }).catch(() => status.textContent = '❌ Erro ao conectar.');
+    }
+
+    function prepararEndereco() {
+      var rua = document.getElementById('rua').value;
+      var bairro = document.getElementById('bairro').value;
+      var cidade = document.getElementById('cidade').value;
+      var numero = document.getElementById('numero_complemento').value;
+      document.getElementById('endereco_completo').value = rua + ", " + numero + " - " + bairro + ", " + cidade;
+    }
+  </script>
 </body>
 </html>
