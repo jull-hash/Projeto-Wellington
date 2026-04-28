@@ -1,3 +1,54 @@
+<?php 
+
+// Iniciar a sessão
+session_start();
+
+
+// Incluir o arquivo de conexão com o banco
+require_once "conexao.php";
+
+// Variáveis para mensagens
+$sucesso = "";
+$erro = "";
+
+$editando= null;
+
+
+if (isset($_GET["editar"])){
+    $id = $_GET["editar"];
+    $sql = "SELECT * FROM livro WHERE id_livro = $id_livro";
+    $res=mysqli_query($conexao,$sql);
+    $editando = mysqli_fetch_assoc($res);
+}
+// Se $editando tiver dados, o formulario vai aparecer preenchido
+// Se $editando for null, o formulario aparece vazio (cadastro)
+
+  
+// Verificar se o email já existe
+$sql = "SELECT * FROM livro WHERE nome_livro = '$nome_livro'";
+$resultado = mysqli_query($conexao, $sql);
+
+if (empty($error)){
+  if (!empty($_POST["id_livro"])) {
+      $id = $_POST["id_livro"];
+      $sqlcurform = "UPDATE livro
+              SET nome_livro='$nome_livro',
+              autor='$autor',
+              publicado='$publicado',
+              genero='$genero',
+              preco_livro='$preco_livro',
+              imagem_livro='$strimagem_livro',
+              descricao_livro='$descricao_livro',
+              quantidade_livro='$quantidade_livro',
+              WHERE id_livro = '$id'";
+  }
+}
+
+// Buscar todos os livros para listar
+$sql = "SELECT imagem_livro, nome_livro, autor, editora, quantidade_livro FROM livro ORDER BY id DESC";
+$usuarios = mysqli_query($conexao, $sql);
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
