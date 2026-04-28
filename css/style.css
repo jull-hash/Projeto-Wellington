@@ -5,6 +5,7 @@
     --marrom-escuro: #4a332a;
     --marrom-medio: #704c3a;
     --marrom-claro: #a07b65;
+    --verde: #3cff00; 
     --bg-fundo: #f3ede7;
     --bg-card: #ffffff;
     --bg-input: #f0ebe4;
@@ -588,3 +589,23 @@
       gap: 1.5rem;
     }
   }
+
+    /* =======================================================
+   11. MENSAGEM DE SUCESSO E ERRO
+======================================================= */
+
+.mensagem-sucesso {
+  border: 2px solid var(--verde);
+  color: var(--marrom-claro);
+  font-size: 1.1rem;
+  font-weight: 700;
+  
+}
+
+.mensagem-erro {
+  border: 2px solid var(--verde);
+  color: var(--verde);
+  font-size: 1.1rem;
+  font-weight: 700;
+  
+}

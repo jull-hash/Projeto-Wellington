@@ -1,8 +1,64 @@
 <?php
 session_start();
 
-
 require_once "../conexao.php";
+
+// if (isset($_GET["editar"])) {
+    //$id = $_GET["editar"];
+    //$sqlcurform = "SELECT * FROM livro WHERE id_livro = '$id'";
+    //$res = mysqli_query($conexao, $sqlcurform);
+    //$editando = mysqli_fetch_assoc($res);
+//}
+
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    $nome_livro  = $_POST["nome_livro"];
+    $autor = $_POST["autor"];
+    $publicado = $_POST["publicado"];
+    $genero = $_POST["genero"];
+    $preco_livro = $_POST ["preco_livro"];
+    $imagem_livro= $_FILES["imagem_livro"];
+    $descricao_livro= $_POST["descricao_livro"];
+    $quantidade_livro= $_POST["quantidade_livro"];
+
+
+    if ($imagem_livro["error"] == 0) {
+
+
+    $tipospermitidos = ["image/jpeg", "image/png", "image/webp"];
+    
+    if (!in_array($imagem_livro["type"], $tipospermitidos)){
+        $error = "Tipo não permitido. Use JPG, PNG ou WEBP.";
+    
+    }else{
+        $extensao = pathinfo($imagem_livro["name"], PATHINFO_EXTENSION);
+        $strimagem_livro= "livro_". time() . "." . $extensao;
+    
+        move_uploaded_file($imagem_livro["tmp_name"], "../uploads". $strimagem_livro);
+    }
+}    
+
+$sqlcurform = "SELECT * FROM livro WHERE nome_livro = '$nome_livro'";
+    $resultado = mysqli_query($conexao,$sqlcurform);
+    if (mysqli_num_rows($resultado) > 0){
+        $error = "Este livro já está cadastrado";
+
+    }else{
+        
+                $sqlcurform = "INSERT INTO livro (nome_livro, autor, publicado, genero, preco_livro, imagem_livro, descricao_livro, quantidade_livro) VALUES ('$nome_livro','$autor','$publicado','$genero','$preco_livro','$strimagem_livro','$descricao_livro','$quantidade_livro')";
+            }
+            if (mysqli_query($conexao, $sqlcurform)) {
+              $sucesso = "Livro cadastrado com sucesso!";
+              
+          } else {
+              $error = "Erro ao cadastrar lIVRO.";
+          }
+        }
+   
+    
+$sqlcurform = "SELECT id_livro,nome_livro, autor, publicado, genero, preco_livro, imagem_livro, descricao_livro, quantidade_livro, livro_criado_em FROM livro ORDER BY id_livro DESC";
+$results = mysqli_query($conexao, $sqlcurform);
 
 ?>
 
@@ -32,12 +88,29 @@ require_once "../conexao.php";
     </nav>
   </aside>
 
+  <!-- Mensagem de sucesso -->
+  <?php if (!empty($sucesso)): ?>
+            <div class="mensagem-sucesso">
+                <?php echo $sucesso; ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Mensagem de erro -->
+        <?php if (!empty($erro)): ?>
+            <div class="mensagem-sucesso">
+                <?php echo $erro; ?>
+            </div>
+        <?php endif; ?>
+        
   <main class="main-content">
     <div class="card-formulario">
       <h1>Adicionar Novo Livro</h1>
       <form action="" method="POST" enctype="multipart/form-data">
         <div class="area-upload">
-          <input type="file" id="imagem_livro" accept="image/*" onchange="mostrarPreview(event)" required />
+          <input type="file"
+          name = "imagem_livro"
+          id="imagem_livro" 
+          accept=".jpg,.png,.webp"onchange="mostrarPreview(event)" required />
           <div class="conteudo-upload" id="texto-upload">
             <span style="font-size: 0.9rem; font-weight: 700;">Adicionar imagem</span>
           </div>
@@ -48,19 +121,34 @@ require_once "../conexao.php";
         <div class="grid-form">
           <div class="grupo-campo linha-completa">
             <label>Título</label>
-            <input type="text" placeholder="Ex: O Senhor dos Anéis" required />
+            <input type="text" name="nome_livro" placeholder="Ex: O Senhor dos Anéis" required />
           </div>
           <div class="grupo-campo">
             <label>Autor</label>
-            <input type="text" placeholder="Ex: J.R.R. Tolkien" required />
+            <input type="text" name="autor" placeholder="Ex: J.R.R. Tolkien" required />
           </div>
           <div class="grupo-campo">
-            <label>Editora</label>
-            <input type="text" placeholder="Ex: HarperCollins" required />
+            <label>Publicado</label>
+            <input type="text" name="publicado" placeholder="Ex: HarperCollins" required />
           </div>
           <div class="grupo-campo">
             <label>Quantidade Disponível</label>
-            <input type="number" placeholder="Ex: 9" min="0" required />
+            <input type="number" name="quantidade_livro" placeholder="Ex: 9" min="0" required />
+          </div>
+        </div>
+        <div class="grupo-campo">
+            <label>Preço</label>
+            <input type="text" name="preco_livro" placeholder="Ex: 10,50" min="0" required />
+          </div>
+        </div>
+        <div class="grupo-campo">
+            <label>Genero</label>
+            <input type="text" name="genero" placeholder="Ex: Terror, mistério, suspense..." min="0" required />
+          </div>
+        </div>
+        <div class="grupo-campo">
+            <label>Genero</label>
+            <input type="text" name="descricao_livro" placeholder="Sinopse do livro" min="0" required />
           </div>
         </div>
 
