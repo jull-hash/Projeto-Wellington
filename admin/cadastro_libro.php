@@ -18,11 +18,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nome_livro  = $_POST["nome_livro"];
     $autor = $_POST["autor"];
     $publicado = $_POST["publicado"];
-    $genero = $_FILES["genero"];
-    $preco_livro = ["preco_livro"];
-    $imagem_livro= ["imagem_livro"];
-    $descricao_livro=["descricao_livro"];
-    $quantidade_livro=["quantidade_livro"];
+    $genero = $_POST["genero"];
+    $preco_livro = $_POST["preco_livro"];
+    $imagem_livro= $_POST["imagem_livro"];
+    $descricao_livro= $_POST["descricao_livro"];
+    $quantidade_livro= $_POST["quantidade_livro"];
 
 
     if ($imagem_livro["error"] == 0) {
@@ -92,7 +92,7 @@ $results = mysqli_query($conexao, $sqlcurform);
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Adicionar Livro — Admin</title>
   <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
  
@@ -113,7 +113,7 @@ $results = mysqli_query($conexao, $sqlcurform);
         <div class="grid-form">
           <div class="grupo-campo linha-completa">
             <label>Título</label>
-            <input type="text" placeholder="Ex: O Senhor dos Anéis" required />
+            <input type="text" name="nome_livro" placeholder="Ex: O Senhor dos Anéis" required />
           </div>
           <div class="grupo-campo">
             <label>Autor</label>
