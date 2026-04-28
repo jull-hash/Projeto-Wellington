@@ -130,7 +130,7 @@ $results = mysqli_query($conexao, $sqlcurform);
         </div>
 
         <div class="form-footer" style="margin-top: 2rem;">
-          <a class="link-rodape" href="listar_livros.html">← Voltar ao Catálogo</a>
+          <a class="link-rodape" href="listar_livros.php">← Voltar ao Catálogo</a>
           <button type="submit" class="btn-primario">Adicionar Livro</button>
         </div>
       </form>
