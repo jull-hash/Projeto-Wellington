@@ -4,6 +4,10 @@ require_once "include/menu_adm.php";
 
 require_once "../conexao.php";
 
+$error="";
+$sucesso="";
+$editando= null;
+
 if (isset($_GET["editar"])) {
     $id = $_GET["editar"];
     $sqlcurform = "SELECT * FROM livro WHERE id_livro = '$id'";
@@ -20,11 +24,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $publicado = $_POST["publicado"];
     $genero = $_POST["genero"];
     $preco_livro = $_POST["preco_livro"];
-    $imagem_livro= $_POST["imagem_livro"];
+    $imagem_livro= $_FILES["imagem_livro"];
     $descricao_livro= $_POST["descricao_livro"];
     $quantidade_livro= $_POST["quantidade_livro"];
 
+$sqlcurform = "SELECT * FROM livro WHERE nome_livro = '$nome_livro'";
+    $resultado = mysqli_query($conexao,$sqlcurform);
+    if (mysqli_num_rows($resultado) > 0 && !$editando ){
+        $error = "Este curso já está cadastrado";
 
+    }else{
+      
     if ($imagem_livro["error"] == 0) {
 
 
@@ -41,12 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }    
 
-$sqlcurform = "SELECT * FROM livro WHERE nome_livro = '$nome_livro'";
-    $resultado = mysqli_query($conexao,$sqlcurform);
-    if (mysqli_num_rows($resultado) > 0 && !$editando ){
-        $error = "Este curso já está cadastrado";
 
-    }else{
         if (empty($error)){
             if (!empty($_POST["id"])) {
                 $id = $_POST["id"];
@@ -92,17 +97,43 @@ $results = mysqli_query($conexao, $sqlcurform);
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Adicionar Livro — Admin</title>
   <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
+
+<div class="p-6 flex-1">
+
+            <!-- MENSAGEM DE SUCESSO -->
+            <?php if (!empty($sucesso)): ?>
+            <div class="bg-green-50 border border-green-300 text-green-700 rounded-lg p-3 mb-5 flex items-center gap-2 text-sm">
+                <span class="font-bold text-base">✓</span>
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
+                <?php echo $sucesso; ?>
+            </div>
+                <button class="ml-auto text-green-400 hover:text-green-700 text-lg leading-none">×</button>
+            </div>
+            <?php endif; ?>
+
+            <?php if (!empty($error)): ?>
+            <div class="bg-green-50 border border-green-300 text-green-700 rounded-lg p-3 mb-5 flex items-center gap-2 text-sm">
+                <span class="font-bold text-base">✓</span>
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
+                <?php echo $error; ?>
+            </div>
+                <button class="ml-auto text-green-400 hover:text-green-700 text-lg leading-none">×</button>
+            </div>
+            <?php endif; ?>
+
+        </div>
  
 
   <main class="main-content">
     <div class="card-formulario">
       <h1>Adicionar Novo Livro</h1>
       <form action="" method="POST" enctype="multipart/form-data">
+
         <div class="area-upload">
-          <input type="file" id="imagem_livro" accept="image/*" onchange="mostrarPreview(event)" required />
+          <input type="file" name="imagem_livro" accept="image/*" onchange="mostrarPreview(event)" required />
           <div class="conteudo-upload" id="texto-upload">
             <span style="font-size: 0.9rem; font-weight: 700;">Adicionar imagem</span>
           </div>
@@ -117,15 +148,27 @@ $results = mysqli_query($conexao, $sqlcurform);
           </div>
           <div class="grupo-campo">
             <label>Autor</label>
-            <input type="text" placeholder="Ex: J.R.R. Tolkien" required />
+            <input type="text" name="autor" placeholder="Ex: J.R.R. Tolkien" required />
           </div>
           <div class="grupo-campo">
-            <label>Editora</label>
-            <input type="text" placeholder="Ex: HarperCollins" required />
+            <label>publicado</label>
+            <input type="text" name="publicado" placeholder="Ex: HarperCollins" required />
+          </div>
+          <div class="grupo-campo">
+            <label>genero</label>
+            <input type="text" name="genero" placeholder="Ex: HarperCollins" required />
+          </div>
+          <div class="grupo-campo">
+            <label>descricao</label>
+            <input type="text" name="descricao_livro" placeholder="Ex: HarperCollins" required />
+          </div>
+          <div class="grupo-campo">
+            <label>preço</label>
+            <input type="number" name="preco_livro" placeholder="Ex: HarperCollins" required />
           </div>
           <div class="grupo-campo">
             <label>Quantidade Disponível</label>
-            <input type="number" placeholder="Ex: 9" min="0" required />
+            <input type="number" name="quantidade_livro" placeholder="Ex: 9" min="0" required />
           </div>
         </div>
 
