@@ -23,14 +23,14 @@ if (isset($_SESSION["id_usuario"])) {
       <h2>Painel<br>Admin</h2>
     </div>
     <nav class="menu-nav">
-      <a href="dashboard.html">Dashboard</a>
-      <a href="pedidos.html">Pedidos / Vendas</a>
+      <a href="dashboard.php">Dashboard</a>
+      <a href="pedidos.php">Pedidos / Vendas</a>
       <p style="font-size: 0.8rem; font-weight: 700; color: var(--marrom-claro); margin: 1rem 0 0.2rem 1rem; text-transform: uppercase;">Catálogo</p>
-      <a href="listar_livros.html">Lista de Livros</a>
-      <a href="cadastro_livro.html" class="ativo">Adicionar Livro</a>
+      <a href="listar_livros.php">Lista de Livros</a>
+      <a href="cadastro_livro.php" class="ativo">Adicionar Livro</a>
       <p style="font-size: 0.8rem; font-weight: 700; color: var(--marrom-claro); margin: 1rem 0 0.2rem 1rem; text-transform: uppercase;">Sistema</p>
-      <a href="usuarios.html">Gerenciar Usuários</a>
-      <a href="../login.html" style="color: #c62828; margin-top: 1rem;">Sair</a>
+      <a href="usuarios.php">Gerenciar Usuários</a>
+      <a href="../logout.php" style="color: #c62828; margin-top: 1rem;">Sair</a>
     </nav>
   </aside>
 </body>
