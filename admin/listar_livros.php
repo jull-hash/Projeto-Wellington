@@ -23,10 +23,6 @@ if (isset($_GET["editar"])){
 // Se $editando tiver dados, o formulario vai aparecer preenchido
 // Se $editando for null, o formulario aparece vazio (cadastro)
 
-  
-// Verificar se o email já existe
-$sql = "SELECT * FROM livro WHERE id_livro = '$id_livro'";
-$resultado = mysqli_query($conexao, $sql);
 
 if (empty($error)){
   if (!empty($_POST["id_livro"])) {
@@ -39,13 +35,13 @@ if (empty($error)){
               preco_livro='$preco_livro',
               imagem_livro='$strimagem_livro',
               descricao_livro='$descricao_livro',
-              quantidade_livro='$quantidade_livro',
+              quantidade_livro='$quantidade_livro'
               WHERE id_livro = '$id_livro'";
   }
 }
 
 // Buscar todos os livros para listar
-$sql = "SELECT imagem_livro, nome_livro, autor, genero, quantidade_livro FROM livro ORDER BY id_livro  DESC";
+$sql = "SELECT id_livro, imagem_livro, nome_livro, autor, genero, quantidade_livro FROM livro ORDER BY id_livro  DESC";
 $livros = mysqli_query($conexao, $sql);
 ?>
 
@@ -78,7 +74,7 @@ $livros = mysqli_query($conexao, $sql);
   <main class="main-content" style="align-items: flex-start; justify-content: flex-start;">
     <div class="cabecalho-pagina">
       <h1>Catálogo de Livros</h1>
-      <a href="cadastro_livro.html" class="btn-novo">+ Novo Livro</a>
+      <a href="cadastro_libro.php" class="btn-novo">+ Novo Livro</a>
     </div>
     <div class="secao-tabela">
       <table>
