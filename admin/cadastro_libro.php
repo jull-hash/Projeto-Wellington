@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $extensao = pathinfo($imagem_livro["name"], PATHINFO_EXTENSION);
         $strimagem_livro= "livro_". time() . "." . $extensao;
     
-        move_uploaded_file($imagem_livro["tmp_name"], "../uploads". $strimagem_livro);
+        move_uploaded_file($imagem_livro["tmp_name"], "../uploads/". $strimagem_livro);
     }
 }    
 
