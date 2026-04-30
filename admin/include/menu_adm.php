@@ -1,3 +1,19 @@
+<?php
+
+require_once "../conexao.php";
+
+
+if (!isset($_SESSION["id_usuario"])) {
+    header("Location: ../login.php");
+    exit;
+}
+  if ($_SESSION["usuario_tipo"] == 'user'){
+     header("Location: ../cadastro_usuario.php");
+    }
+    
+     
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 

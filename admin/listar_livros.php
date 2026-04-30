@@ -6,7 +6,8 @@ session_start();
 
 // Incluir o arquivo de conexão com o banco
 require_once "../conexao.php";
-
+require_once "include/menu_adm.php";
+  
 // Variáveis para mensagens
 $sucesso = "";
 $erro = "";

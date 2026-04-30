@@ -1,14 +1,21 @@
 <?php
 session_start();
-
 require_once "../conexao.php";
 
-// if (isset($_GET["editar"])) {
-    //$id = $_GET["editar"];
-    //$sqlcurform = "SELECT * FROM livro WHERE id_livro = '$id'";
-    //$res = mysqli_query($conexao, $sqlcurform);
-    //$editando = mysqli_fetch_assoc($res);
-//}
+
+
+
+$error="";
+$sucesso="";
+$editando= null;
+
+if (isset($_GET["editar"])) {
+    $id = $_GET["editar"];
+    $sqlcurform = "SELECT * FROM livro WHERE id_livro = '$id'";
+    $res = mysqli_query($conexao, $sqlcurform);
+    $editando = mysqli_fetch_assoc($res);
+}
+
 
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -17,12 +24,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $autor = $_POST["autor"];
     $publicado = $_POST["publicado"];
     $genero = $_POST["genero"];
-    $preco_livro = $_POST ["preco_livro"];
+    $preco_livro = $_POST["preco_livro"];
     $imagem_livro= $_FILES["imagem_livro"];
     $descricao_livro= $_POST["descricao_livro"];
     $quantidade_livro= $_POST["quantidade_livro"];
 
+$sqlcurform = "SELECT * FROM livro WHERE nome_livro = '$nome_livro'";
+    $resultado = mysqli_query($conexao,$sqlcurform);
+    if (mysqli_num_rows($resultado) > 0 && !$editando ){
+        $error = "Este curso já está cadastrado";
 
+    }else{
+      
     if ($imagem_livro["error"] == 0) {
 
 
@@ -33,29 +46,45 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     
     }else{
         $extensao = pathinfo($imagem_livro["name"], PATHINFO_EXTENSION);
-        $strimagem_livro= "livro_". time() . "." . $extensao;
+        $strimagem_livro= "Curso_". time() . "." . $extensao;
     
-        move_uploaded_file($imagem_livro["tmp_name"], "../uploads/". $strimagem_livro);
+        move_uploaded_file($imagem_livro["tmp_name"], "../uploads/capas/". $strimagem_livro);
     }
 }    
 
-$sqlcurform = "SELECT * FROM livro WHERE nome_livro = '$nome_livro'";
-    $resultado = mysqli_query($conexao,$sqlcurform);
-    if (mysqli_num_rows($resultado) > 0){
-        $error = "Este livro já está cadastrado";
 
-    }else{
-        
+        if (empty($error)){
+            if (!empty($_POST["id"])) {
+                $id = $_POST["id"];
+                $sqlcurform = "UPDATE livro
+                        SET nome_livro='$nome_livro',
+                        autor='$autor',
+                        publicado='$publicado',
+                        genero='$genero',
+                        preco_livro='$preco_livro',
+                        imagem_livro='$strimagem_livro',
+                        descricao_livro='$descricao_livro',
+                        quantidade_livro='$quantidade_livro',
+                        WHERE id_livro = '$id'";
+            }else{
                 $sqlcurform = "INSERT INTO livro (nome_livro, autor, publicado, genero, preco_livro, imagem_livro, descricao_livro, quantidade_livro) VALUES ('$nome_livro','$autor','$publicado','$genero','$preco_livro','$strimagem_livro','$descricao_livro','$quantidade_livro')";
             }
             if (mysqli_query($conexao, $sqlcurform)) {
-              $sucesso = "Livro cadastrado com sucesso!";
-              
-          } else {
-              $error = "Erro ao cadastrar lIVRO.";
-          }
+                header("location: cadastro.php");
+                exit;
+            }else{
+                $error = "Erro ao cadastrar curso.";
+            }
         }
-   
+    }
+
+    if (mysqli_query($conexao, $sqlcurform)) {
+        $sucesso = "cliente cadastrado com sucesso!";
+        
+    } else {
+        $error = "Erro ao cadastrar cliente.";
+    }
+        }
     
 $sqlcurform = "SELECT id_livro,nome_livro, autor, publicado, genero, preco_livro, imagem_livro, descricao_livro, quantidade_livro, livro_criado_em FROM livro ORDER BY id_livro DESC";
 $results = mysqli_query($conexao, $sqlcurform);
@@ -69,48 +98,43 @@ $results = mysqli_query($conexao, $sqlcurform);
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Adicionar Livro — Admin</title>
   <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/style.css"/>
 </head>
 <body>
-  <aside class="sidebar">
-    <div class="logo-container">
-      <h2>Painel<br>Admin</h2>
-    </div>
-    <nav class="menu-nav">
-      <a href="dashboard.html">Dashboard</a>
-      <a href="pedidos.html">Pedidos / Vendas</a>
-      <p style="font-size: 0.8rem; font-weight: 700; color: var(--marrom-claro); margin: 1rem 0 0.2rem 1rem; text-transform: uppercase;">Catálogo</p>
-      <a href="listar_livros.html">Lista de Livros</a>
-      <a href="cadastro_livro.html" class="ativo">Adicionar Livro</a>
-      <p style="font-size: 0.8rem; font-weight: 700; color: var(--marrom-claro); margin: 1rem 0 0.2rem 1rem; text-transform: uppercase;">Sistema</p>
-      <a href="usuarios.html">Gerenciar Usuários</a>
-      <a href="../login.html" style="color: #c62828; margin-top: 1rem;">Sair</a>
-    </nav>
-  </aside>
 
-  <!-- Mensagem de sucesso -->
-  <?php if (!empty($sucesso)): ?>
-            <div class="mensagem-sucesso">
+<div class="p-6 flex-1">
+
+            <!-- MENSAGEM DE SUCESSO -->
+            <?php if (!empty($sucesso)): ?>
+            <div class="bg-green-50 border border-green-300 text-green-700 rounded-lg p-3 mb-5 flex items-center gap-2 text-sm">
+                <span class="font-bold text-base">✓</span>
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
                 <?php echo $sucesso; ?>
             </div>
-        <?php endif; ?>
-
-        <!-- Mensagem de erro -->
-        <?php if (!empty($erro)): ?>
-            <div class="mensagem-sucesso">
-                <?php echo $erro; ?>
+                <button class="ml-auto text-green-400 hover:text-green-700 text-lg leading-none">×</button>
             </div>
-        <?php endif; ?>
-        
+            <?php endif; ?>
+
+            <?php if (!empty($error)): ?>
+            <div class="bg-green-50 border border-green-300 text-green-700 rounded-lg p-3 mb-5 flex items-center gap-2 text-sm">
+                <span class="font-bold text-base">✓</span>
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
+                <?php echo $error; ?>
+            </div>
+                <button class="ml-auto text-green-400 hover:text-green-700 text-lg leading-none">×</button>
+            </div>
+            <?php endif; ?>
+
+        </div>
+ 
+
   <main class="main-content">
     <div class="card-formulario">
       <h1>Adicionar Novo Livro</h1>
       <form action="" method="POST" enctype="multipart/form-data">
+
         <div class="area-upload">
-          <input type="file"
-          name = "imagem_livro"
-          id="imagem_livro" 
-          accept=".jpg,.png,.webp"onchange="mostrarPreview(event)" required />
+          <input type="file" name="imagem_livro" accept="image/*" onchange="mostrarPreview(event)" required />
           <div class="conteudo-upload" id="texto-upload">
             <span style="font-size: 0.9rem; font-weight: 700;">Adicionar imagem</span>
           </div>
@@ -128,32 +152,29 @@ $results = mysqli_query($conexao, $sqlcurform);
             <input type="text" name="autor" placeholder="Ex: J.R.R. Tolkien" required />
           </div>
           <div class="grupo-campo">
-            <label>Publicado</label>
+            <label>publicado</label>
             <input type="text" name="publicado" placeholder="Ex: HarperCollins" required />
+          </div>
+          <div class="grupo-campo">
+            <label>genero</label>
+            <input type="text" name="genero" placeholder="Ex: HarperCollins" required />
+          </div>
+          <div class="grupo-campo">
+            <label>descricao</label>
+            <input type="text" name="descricao_livro" placeholder="Ex: HarperCollins" required />
+          </div>
+          <div class="grupo-campo">
+            <label>preço</label>
+            <input type="number" name="preco_livro" placeholder="Ex: HarperCollins" required />
           </div>
           <div class="grupo-campo">
             <label>Quantidade Disponível</label>
             <input type="number" name="quantidade_livro" placeholder="Ex: 9" min="0" required />
           </div>
         </div>
-        <div class="grupo-campo">
-            <label>Preço</label>
-            <input type="text" name="preco_livro" placeholder="Ex: 10,50" min="0" required />
-          </div>
-        </div>
-        <div class="grupo-campo">
-            <label>Genero</label>
-            <input type="text" name="genero" placeholder="Ex: Terror, mistério, suspense..." min="0" required />
-          </div>
-        </div>
-        <div class="grupo-campo">
-            <label>Genero</label>
-            <input type="text" name="descricao_livro" placeholder="Sinopse do livro" min="0" required />
-          </div>
-        </div>
 
         <div class="form-footer" style="margin-top: 2rem;">
-          <a class="link-rodape" href="listar_livros.html">← Voltar ao Catálogo</a>
+          <a class="link-rodape" href="listar_livros.php">← Voltar ao Catálogo</a>
           <button type="submit" class="btn-primario">Adicionar Livro</button>
         </div>
       </form>

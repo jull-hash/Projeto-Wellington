@@ -9,8 +9,8 @@ session_start();
 
 // Se já está logado, redireciona para o dashboard
 if (isset($_SESSION["id_usuario"])) {
-    header("Location: cadastro_usuario.php");
-    exit;
+   header("Location: cadastro_usuario.php");
+   exit;
 }
 
 // Incluir o arquivo de conexão com o banco
@@ -39,10 +39,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION["id_usuario"] = $usuario["id_usuario"];
             $_SESSION["nome_usuario"] = $usuario["nome_usuario"];
             $_SESSION["email_usuario"] = $usuario["email"];
+            $_SESSION["usuario_tipo"] = $usuario["tipo"];
 
-            // Redirecionar para o dashboard
-            header("Location: cadastro_usuario.php");
-            exit;
+           
+              if ($usuario["tipo"] == "user"){
+              header("Location: loja.php");
+            }
+              if ($usuario["tipo"] == "adm"){
+              header("Location: admin/dashboard.php");
+            }
         } else {
             $erro = "Email ou senha incorretos.";
         }
@@ -74,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       <p style="color: var(--marrom-claro); font-size: 0.9rem;">Acesse sua conta</p>
     </div>
 
-    <form action="admin/dashboard.html" method="POST">
+    <form action=" " method="POST">
       
       <div class="grupo-campo" style="margin-bottom: 1.2rem;">
         <label>E-mail</label>
