@@ -27,7 +27,7 @@ if (isset($_SESSION["id_usuario"])) {
       <a href="pedidos.php">Pedidos / Vendas</a>
       <p style="font-size: 0.8rem; font-weight: 700; color: var(--marrom-claro); margin: 1rem 0 0.2rem 1rem; text-transform: uppercase;">Catálogo</p>
       <a href="listar_livros.php">Lista de Livros</a>
-      <a href="cadastro_livro.php" class="ativo">Adicionar Livro</a>
+      <a href="cadastro_livro.php">Adicionar Livro</a>
       <p style="font-size: 0.8rem; font-weight: 700; color: var(--marrom-claro); margin: 1rem 0 0.2rem 1rem; text-transform: uppercase;">Sistema</p>
       <a href="usuarios.php">Gerenciar Usuários</a>
       <a href="../logout.php" style="color: #c62828; margin-top: 1rem;">Sair</a>

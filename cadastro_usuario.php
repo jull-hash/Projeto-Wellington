@@ -2,13 +2,11 @@
 
 session_start();
 
-require_once "include/menu_user.php";
 require_once "conexao.php";
 
 $sucesso  = "";
 $erro     = "";
 $editando = null;
-$idVisual = 1;
 
 // ── EDITAR: carrega dados do usuário pelo GET ──────────────────────
 if (isset($_GET["editar"])) {
@@ -99,6 +97,10 @@ $lista_usuarios = mysqli_query($conexao, "SELECT * FROM usuario ORDER BY id_usua
       <h1>Criar uma conta</h1>
       
       <form action="" method="POST" onsubmit="prepararEndereco()" enctype="multipart/form-data">
+
+      <?php if ($editando): ?>
+        <input type="hidden" name="id" value="<?= $editando["id"] ?>">
+      <?php endif; ?>
         
         <div class="layout-colunas">
           
@@ -106,7 +108,12 @@ $lista_usuarios = mysqli_query($conexao, "SELECT * FROM usuario ORDER BY id_usua
             <p class="label-secao">👤 Dados Pessoais</p>
 
             <div class="area-upload">
-          <input type="file" name="imagem_usuario" accept="image/*" onchange="mostrarPreview(event)" required />
+          <input 
+          type="file" 
+          name="imagem_usuario" 
+          accept="image/*" 
+          onchange="mostrarPreview(event)" 
+          required />
           <div class="conteudo-upload" id="texto-upload">
             <span style="font-size: 0.9rem; font-weight: 700;">Adicionar Foto</span>
           </div>
@@ -116,19 +123,38 @@ $lista_usuarios = mysqli_query($conexao, "SELECT * FROM usuario ORDER BY id_usua
             <div class="grid-form">
               <div class="grupo-campo">
                 <label>Nome Completo</label>
-                <input type="text" name="nome_usuario" placeholder="Seu nome completo" required />
+                <input 
+                value="<?= $editando["nome_usuario"] ?? "" ?>"
+                type="text" 
+                name="nome_usuario" 
+                placeholder="Seu nome completo" 
+                required />
               </div>
               <div class="grupo-campo">
                 <label>E-mail</label>
-                <input type="email" name="email" placeholder="seu@email.com" required />
+                <input 
+                value="<?= $editando["email"] ?? "" ?>"
+                type="email" 
+                name="email" 
+                placeholder="seu@email.com" 
+                required />
               </div>
               <div class="grupo-campo">
                 <label>Telefone</label>
-                <input type="text" name="telefone" placeholder="(00) 00000-0000" maxlength="15" />
+                <input 
+                value="<?= $editando["telefone"] ?? "" ?>"
+                type="text" 
+                name="telefone" 
+                placeholder="(00) 00000-0000" 
+                maxlength="15" />
               </div>
               <div class="grupo-campo">
                 <label>Senha</label>
-                <input type="password" name="senha" placeholder="Crie uma senha segura" required />
+                <input 
+                type="password" 
+                name="senha" 
+                placeholder="<?= $editando ? "Salvar Alteracoes" : "Cadastrar Produto" ?> " 
+                required />
               </div>
             </div>
           </div>
