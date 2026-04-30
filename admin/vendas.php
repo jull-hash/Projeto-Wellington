@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+require_once "../conexao.php";
+require_once "include/menu_adm.php";
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -78,32 +87,7 @@
 </head>
 <body>
 
-  <aside class="sidebar">
-    <div class="logo-container">
-      <svg width="40" height="40" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M6 10 C16 13 24 19 24 19 C24 19 32 13 42 10 L42 38 C32 35 24 41 24 41 C24 41 16 35 6 38 Z"
-              stroke="var(--marrom-escuro)" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
-        <line x1="24" y1="19" x2="24" y2="41" stroke="var(--marrom-escuro)" stroke-width="2.5"/>
-      </svg>
-      <h2>Painel<br>Admin</h2>
-    </div>
-
-    <nav class="menu-nav">
-      <a href="dashboard.php">Dashboard</a>
-      <a href="pedidos.php" class="ativo">Pedidos / Vendas</a>
-
-      <p style="font-size: 0.8rem; font-weight: 700; color: var(--marrom-claro); margin: 1rem 0 0.2rem 1rem; text-transform: uppercase;">Catálogo</p>
-      
-      <a href="listar_livros.php">Lista de Livros</a>
-      <a href="cadastro_livro.php">Adicionar Livro</a>
-      <a href="#">Categorias</a>
-
-      <p style="font-size: 0.8rem; font-weight: 700; color: var(--marrom-claro); margin: 1rem 0 0.2rem 1rem; text-transform: uppercase;">Sistema</p>
-      
-      <a href="usuarios.php">Gerenciar Usuários</a>
-      <a href="../login.php" style="color: #c62828; margin-top: 1rem;">Sair</a>
-    </nav>
-  </aside>
+  
 
   <main class="main-content" style="align-items: flex-start; justify-content: flex-start;">
     

@@ -3,7 +3,6 @@
 session_start();
 
 require_once "../conexao.php";
-
 require_once "include/menu_adm.php";
 
 ?>

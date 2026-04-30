@@ -56,22 +56,7 @@ $livros = mysqli_query($conexao, $sql);
   <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
-  <aside class="sidebar">
-    <div class="logo-container">
-      <h2>Painel<br>Admin</h2>
-    </div>
-    <nav class="menu-nav">
-      <a href="dashboard.php">Dashboard</a>
-      <a href="vendas.php">Pedidos / Vendas</a>
-      <p style="font-size: 0.8rem; font-weight: 700; color: var(--marrom-claro); margin: 1rem 0 0.2rem 1rem; text-transform: uppercase;">Catálogo</p>
-      <a href="listar_livros.php" class="ativo">Lista de Livros</a>
-      <a href="cadastro_libro.php">Adicionar Livro</a>
-      <p style="font-size: 0.8rem; font-weight: 700; color: var(--marrom-claro); margin: 1rem 0 0.2rem 1rem; text-transform: uppercase;">Sistema</p>
-      <a href="gerenciar_usuarios.php">Gerenciar Usuários</a>
-      <a href="../login.php " style="color: #c62828; margin-top: 1rem;">Sair</a>
-    </nav>
-  </aside>
-
+  
   <main class="main-content" style="align-items: flex-start; justify-content: flex-start;">
     <div class="cabecalho-pagina">
       <h1>Catálogo de Livros</h1>
