@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 $sqlcurform = "SELECT * FROM livro WHERE nome_livro = '$nome_livro'";
     $resultado = mysqli_query($conexao,$sqlcurform);
     if (mysqli_num_rows($resultado) > 0 && !$editando ){
-        $error = "Este curso já está cadastrado";
+        $error = "Este livro já está cadastrado";
 
     }else{
       
@@ -49,7 +49,7 @@ $sqlcurform = "SELECT * FROM livro WHERE nome_livro = '$nome_livro'";
         $extensao = pathinfo($imagem_livro["name"], PATHINFO_EXTENSION);
         $strimagem_livro= "Curso_". time() . "." . $extensao;
     
-        move_uploaded_file($imagem_livro["tmp_name"], "../uploads/capas/". $strimagem_livro);
+        move_uploaded_file($imagem_livro["tmp_name"], "uploads/". $strimagem_livro);
     }
 }    
 
@@ -65,28 +65,20 @@ $sqlcurform = "SELECT * FROM livro WHERE nome_livro = '$nome_livro'";
                         preco_livro='$preco_livro',
                         imagem_livro='$strimagem_livro',
                         descricao_livro='$descricao_livro',
-                        quantidade_livro='$quantidade_livro',
+                        quantidade_livro='$quantidade_livro'
                         WHERE id_livro = '$id'";
             }else{
                 $sqlcurform = "INSERT INTO livro (nome_livro, autor, publicado, genero, preco_livro, imagem_livro, descricao_livro, quantidade_livro) VALUES ('$nome_livro','$autor','$publicado','$genero','$preco_livro','$strimagem_livro','$descricao_livro','$quantidade_livro')";
             }
             if (mysqli_query($conexao, $sqlcurform)) {
-                header("location: cadastro.php");
-                exit;
+              $sucesso = "Livro cadastrado com sucesso!";
             }else{
-                $error = "Erro ao cadastrar curso.";
+              $sucesso = "Erro ao cadastrar o livro!";
             }
         }
     }
 
-    if (mysqli_query($conexao, $sqlcurform)) {
-        $sucesso = "cliente cadastrado com sucesso!";
-        
-    } else {
-        $error = "Erro ao cadastrar cliente.";
-    }
-        }
-    
+}
 $sqlcurform = "SELECT id_livro,nome_livro, autor, publicado, genero, preco_livro, imagem_livro, descricao_livro, quantidade_livro, livro_criado_em FROM livro ORDER BY id_livro DESC";
 $results = mysqli_query($conexao, $sqlcurform);
 
@@ -107,26 +99,20 @@ $results = mysqli_query($conexao, $sqlcurform);
 
             <!-- MENSAGEM DE SUCESSO -->
             <?php if (!empty($sucesso)): ?>
-            <div class="bg-green-50 border border-green-300 text-green-700 rounded-lg p-3 mb-5 flex items-center gap-2 text-sm">
-                <span class="font-bold text-base">✓</span>
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
+              <div class="msg-alerta msg-sucesso">
                 <?php echo $sucesso; ?>
-            </div>
-                <button class="ml-auto text-green-400 hover:text-green-700 text-lg leading-none">×</button>
-            </div>
+                </div>
             <?php endif; ?>
 
             <?php if (!empty($error)): ?>
-            <div class="bg-green-50 border border-green-300 text-green-700 rounded-lg p-3 mb-5 flex items-center gap-2 text-sm">
-                <span class="font-bold text-base">✓</span>
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
+            <div class="msg-alerta msg-erro">
                 <?php echo $error; ?>
-            </div>
-                <button class="ml-auto text-green-400 hover:text-green-700 text-lg leading-none">×</button>
-            </div>
+                </div>
             <?php endif; ?>
 
         </div>
+
+        <
  
 
   <main class="main-content">
