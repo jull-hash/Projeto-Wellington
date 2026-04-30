@@ -11,14 +11,3 @@ $resss = mysqli_fetch_array($res);
 echo $resss;
 
 
-
-
-
-
-
-
-
-
-
-
-?>
