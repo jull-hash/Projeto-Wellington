@@ -21,7 +21,7 @@ if (isset($_GET["editar"])) {
 // ── POST: salvar (inserir ou atualizar) ───────────────────────────
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $imagem   = $_POST["imagem_usuario"] ?? "";
+    $imagem_usuario   = $_FILES["imagem_usuario"] ?? "";
     $nome     = $_POST["nome_usuario"]   ?? "";
     $endereco = $_POST["endereco"]       ?? "";
     $email    = $_POST["email"]          ?? "";
@@ -32,14 +32,31 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $res_email = mysqli_query($conexao, "SELECT * FROM usuario WHERE email = '$email'");
     if (mysqli_num_rows($res_email) > 0 && empty($_POST["id_usuario"])) {
         $erro = "Este email já está cadastrado.";
+    }else{
+
+    if ($imagem_usuario["error"] == 0) {
+
+
+    $tipospermitidos = ["image/jpeg", "image/png", "image/webp"];
+    
+    if (!in_array($imagem_usuario["type"], $tipospermitidos)){
+        $error = "Tipo não permitido. Use JPG, PNG ou WEBP.";
+    
+    }else{
+        $extensao = pathinfo($imagem_usuario["name"], PATHINFO_EXTENSION);
+        $strimagem_usuario= "Foto_". time() . "." . $extensao;
+    
+        move_uploaded_file($imagem_usuario["tmp_name"], "uploads/fotos/". $strimagem_usuario);
     }
+}    
+
 
     if (empty($erro)) {
         if (!empty($_POST["id_usuario"])) {
             // UPDATE
             $id  = $_POST["id_usuario"];
             $sql = "UPDATE usuario
-                    SET imagem_usuario = '$imagem',
+                    SET imagem_usuario = '$strimagem_usuario',
                         nome_usuario   = '$nome',
                         endereco       = '$endereco',
                         email          = '$email',
@@ -50,16 +67,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             // INSERT
             $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
             $sql = "INSERT INTO usuario (imagem_usuario, nome_usuario, endereco, email, telefone, senha)
-                    VALUES ('$imagem', '$nome', '$endereco', '$email', '$telefone', '$senhaHash')";
+                    VALUES ('$strimagem_usuario', '$nome', '$endereco', '$email', '$telefone', '$senhaHash')";
         }
-
+    }
+    }
         if (mysqli_query($conexao, $sql)) {
             $sucesso = "Usuário salvo com sucesso!";
         } else {
             $erro = "Erro ao salvar usuário: " . mysqli_error($conexao);
         }
     }
-}
+
 
 // ── Lista todos os usuários para a tabela ─────────────────────────
 $lista_usuarios = mysqli_query($conexao, "SELECT * FROM usuario ORDER BY id_usuario DESC");
@@ -80,39 +98,47 @@ $lista_usuarios = mysqli_query($conexao, "SELECT * FROM usuario ORDER BY id_usua
     <div class="card-formulario-largo">
       <h1>Criar uma conta</h1>
       
-      <form action="" method="POST" onsubmit="prepararEndereco()">
+      <form action="" method="POST" onsubmit="prepararEndereco()" enctype="multipart/form-data">
         
         <div class="layout-colunas">
           
           <div class="coluna-form">
             <p class="label-secao">👤 Dados Pessoais</p>
+
+            <div class="area-upload">
+          <input type="file" name="imagem_usuario" accept="image/*" onchange="mostrarPreview(event)" required />
+          <div class="conteudo-upload" id="texto-upload">
+            <span style="font-size: 0.9rem; font-weight: 700;">Adicionar Foto</span>
+          </div>
+          <img id="preview" class="preview-img" alt="Capa" />
+        </div>
             
             <div class="grid-form">
               <div class="grupo-campo">
                 <label>Nome Completo</label>
-                <input type="text" id="nome" placeholder="Seu nome completo" required />
+                <input type="text" name="nome_usuario" placeholder="Seu nome completo" required />
               </div>
               <div class="grupo-campo">
                 <label>E-mail</label>
-                <input type="email" id="email" placeholder="seu@email.com" required />
+                <input type="email" name="email" placeholder="seu@email.com" required />
               </div>
               <div class="grupo-campo">
                 <label>Telefone</label>
-                <input type="text" id="telefone" placeholder="(00) 00000-0000" maxlength="15" />
+                <input type="text" name="telefone" placeholder="(00) 00000-0000" maxlength="15" />
               </div>
               <div class="grupo-campo">
                 <label>Senha</label>
-                <input type="password" id="senha" placeholder="Crie uma senha segura" required />
+                <input type="password" name="senha" placeholder="Crie uma senha segura" required />
               </div>
             </div>
           </div>
 
-          <div class="coluna-form">
-            <p class="label-secao">📍 Endereço de Entrega</p>
+            
             
             <div class="grid-form">
               <div class="linha-cep">
                 <div class="grupo-campo" style="width: 100%;">
+                  <p class="label-secao">📍 Endereço de Entrega</p>
                   <label>CEP</label>
                   <input type="text" id="cep" placeholder="00000-000" maxlength="9" />
                 </div>
@@ -142,7 +168,6 @@ $lista_usuarios = mysqli_query($conexao, "SELECT * FROM usuario ORDER BY id_usua
               </div>
               <input type="hidden" id="endereco_completo" name="endereco" value="" />
             </div>
-          </div>
 
         </div> <div class="form-footer" style="margin-top: 3rem; border-top: 1px solid var(--bg-input); padding-top: 1.5rem;">
           <a class="link-rodape" href="login.html">Já tem uma conta? Faça login</a>
@@ -155,6 +180,20 @@ $lista_usuarios = mysqli_query($conexao, "SELECT * FROM usuario ORDER BY id_usua
   </main>
 
   <script>
+    function mostrarPreview(event) {
+      var input = event.target;
+      var preview = document.getElementById('preview');
+      var textoUpload = document.getElementById('texto-upload');
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          preview.src = e.target.result;
+          preview.style.display = 'block';   
+          textoUpload.style.display = 'none'; 
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
     /* Máscara de Telefone */
     document.getElementById('telefone').addEventListener('input', function () {
       var v = this.value.replace(/\D/g, '').slice(0, 11);
