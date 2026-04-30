@@ -4,6 +4,15 @@ session_start();
 require_once "include/menu_user.php";
 require_once "conexao.php";
 
+// SELECT 
+//     usuario.nome_usuario, 
+//     livro.titulo_livro, 
+//     pedido.id_pedido
+// FROM pedido
+// JOIN usuario ON pedido.user_id = usuario.id_usuario
+// JOIN livro ON pedido.livro_id = livro.id_livro;
+
+$sqlped = "SELECT usuario.nome_usuario, livro.titulo_livro, pedido.id_pedido FROM pedido JOIN usuario ON pedido.user_id = usuario.id_usuario JOIN livro ON pedido.livro_id = livro.id_livro";
 $sql = "SELECT id_livro, nome_livro, autor, publicado, genero, preco_livro, imagem_livro, descricao_livro, quantidade_livro, livro_criado_em FROM livro ORDER BY id_livro  DESC";
 $livros = mysqli_query($conexao, $sql);
 ?>

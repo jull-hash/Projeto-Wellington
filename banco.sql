@@ -27,15 +27,26 @@ livro_criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 
-create table estoque (
-    id_estoque int auto_increment primary key,
-    nome_estoque varchar(100) not null,
-    
+create table pedido (
+id_pedido int auto_increment primary key,
+data_pedido DATETIME DEFAULT CURRENT_TIMESTAMP,
+total_pedido decimal(10,2) not null,
+status_pedido enum('1','2','3') not null default '1',
+    user_id int,
+    constraint fk_pedido_user
+    foreign key (user_id)
+    references usuario(id_usuario)
+);
+
+create table item_pedido (
+    id_item int auto_increment primary key,
+    pedido_id int,
     livro_id int,
-    constraint fk_livro_guardar
-    foreign key (livro_id)
-    references livro(id_livro)
-    );
+    quantidade int not null default 1,
+    preco_unitario decimal(10, 2) not null,
+    constraint fk_item_pedido foreign key (pedido_id) references pedido(id_pedido),
+    constraint fk_item_livro foreign key (livro_id) references livro(id_livro)
+);
 
 insert into usuario (nome_usuario, senha, email, tipo) values(
 'adm',

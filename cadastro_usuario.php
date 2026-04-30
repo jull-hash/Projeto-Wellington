@@ -1,4 +1,11 @@
 <?php
+if (isset($_SESSION["id_usuario"])) {
+    if ($_SESSION["usuario_tipo"] == 'user'){
+        header("Location: loja.php");
+        }else if ($_SESSION["usuario_tipo"] == 'adm'){
+          header("Location: admin/dashboard.php");
+        }
+}
 
 session_start();
 
@@ -19,12 +26,13 @@ if (isset($_GET["editar"])) {
 // ── POST: salvar (inserir ou atualizar) ───────────────────────────
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $imagem_usuario   = $_FILES["imagem_usuario"] ?? "";
-    $nome     = $_POST["nome_usuario"]   ?? "";
-    $endereco = $_POST["endereco"]       ?? "";
-    $email    = $_POST["email"]          ?? "";
-    $telefone = $_POST["telefone"]       ?? "";
-    $senha    = $_POST["senha"]          ?? "";
+    $imagem_usuario= $_FILES["imagem_usuario"];
+    $nome= $_POST["nome_usuario"];
+    $endereco= $_POST["endereco"];
+    $email= $_POST["email"];
+    $telefone= $_POST["telefone"];
+    $senha= $_POST["senha"];
+    $strimagem_usuario = "";
 
     // Verifica email duplicado apenas no cadastro novo
     $res_email = mysqli_query($conexao, "SELECT * FROM usuario WHERE email = '$email'");
@@ -92,7 +100,7 @@ $sql = mysqli_query($conexao, "SELECT * FROM usuario ORDER BY id_usuario DESC");
 </head> 
 <body style="justify-content: center; align-items: center; padding: 2rem;">
 
-  <div class="card-formulario" style="max-width: 400px; padding: 3rem 2rem; width: 100%;">
+  <div class="card-formulario" style="max-width: 500px; padding: 3rem 2rem; width: 100%;">
     
 <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 2rem;">
       <svg width="50" height="50" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 10px;">
@@ -104,10 +112,6 @@ $sql = mysqli_query($conexao, "SELECT * FROM usuario ORDER BY id_usuario DESC");
       <p style="color: var(--marrom-claro); font-size: 0.9rem;">Acesse sua conta</p>
     </div>
       <form action="" method="POST" onsubmit="prepararEndereco()" enctype="multipart/form-data">
-
-      <?php if ($editando): ?>
-        <input type="hidden" name="id" value="<?= $editando["id"] ?>">
-      <?php endif; ?>
         
         <div class="layout-colunas">
           
@@ -120,7 +124,7 @@ $sql = mysqli_query($conexao, "SELECT * FROM usuario ORDER BY id_usuario DESC");
           name="imagem_usuario" 
           accept="image/*" 
           onchange="mostrarPreview(event)" 
-          required />
+          required/>
           <div class="conteudo-upload" id="texto-upload">
             <span style="font-size: 0.9rem; font-weight: 700;">Adicionar Foto</span>
           </div>
@@ -131,7 +135,6 @@ $sql = mysqli_query($conexao, "SELECT * FROM usuario ORDER BY id_usuario DESC");
               <div class="grupo-campo">
                 <label>Nome Completo</label>
                 <input 
-                value="<?= $editando["nome_usuario"] ?? "" ?>"
                 type="text" 
                 name="nome_usuario" 
                 placeholder="Seu nome completo" 
@@ -140,7 +143,6 @@ $sql = mysqli_query($conexao, "SELECT * FROM usuario ORDER BY id_usuario DESC");
               <div class="grupo-campo">
                 <label>E-mail</label>
                 <input 
-                value="<?= $editando["email"] ?? "" ?>"
                 type="email" 
                 name="email" 
                 placeholder="seu@email.com" 
@@ -149,18 +151,19 @@ $sql = mysqli_query($conexao, "SELECT * FROM usuario ORDER BY id_usuario DESC");
               <div class="grupo-campo">
                 <label>Telefone</label>
                 <input 
-                value="<?= $editando["telefone"] ?? "" ?>"
                 type="text" 
                 name="telefone" 
                 placeholder="(00) 00000-0000" 
-                maxlength="15" />
+                maxlength="11"
+                minlength="11" />
               </div>
               <div class="grupo-campo">
                 <label>Senha</label>
                 <input 
                 type="password" 
-                name="senha" 
-                placeholder="<?= $editando ? "Salvar Alteracoes" : "Cadastrar Produto" ?> " 
+                name="senha"
+                placeholder="*********"
+                min=9 
                 required />
               </div>
             </div>
