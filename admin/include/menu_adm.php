@@ -1,7 +1,7 @@
 <?php
 if (isset($_SESSION["id_usuario"])) {
     if ($_SESSION["usuario_tipo"] == 'user'){
-        header("Location: ../cadastro_usuario.php");
+        header("Location: ../loja.php");
         }
     }else{
         header("Location: ../login.php");
@@ -20,7 +20,7 @@ if (isset($_SESSION["id_usuario"])) {
     <body class="bg-gray-100 min-h-screen flex">
     <aside class="sidebar">
     <div class="logo-container">
-      <h2>Painel<br>Admin</h2>
+      <h2>Livraria<br>Oliveira<br>ADM</h2>
     </div>
     <nav class="menu-nav">
       <a href="dashboard.php">Dashboard</a>

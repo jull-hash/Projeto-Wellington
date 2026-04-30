@@ -78,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 
 // ── Lista todos os usuários para a tabela ─────────────────────────
-$lista_usuarios = mysqli_query($conexao, "SELECT * FROM usuario ORDER BY id_usuario DESC");
+$sql = mysqli_query($conexao, "SELECT * FROM usuario ORDER BY id_usuario DESC");
 ?>
 
 <!DOCTYPE html>
@@ -90,12 +90,19 @@ $lista_usuarios = mysqli_query($conexao, "SELECT * FROM usuario ORDER BY id_usua
   <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head> 
+<body style="justify-content: center; align-items: center; padding: 2rem;">
 
-  <main class="main-content" style="align-items: flex-start;">
+  <div class="card-formulario" style="max-width: 400px; padding: 3rem 2rem; width: 100%;">
     
-    <div class="card-formulario-largo">
-      <h1>Criar uma conta</h1>
-      
+<div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 2rem;">
+      <svg width="50" height="50" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 10px;">
+        <path d="M6 10 C16 13 24 19 24 19 C24 19 32 13 42 10 L42 38 C32 35 24 41 24 41 C24 41 16 35 6 38 Z"
+              stroke="var(--marrom-escuro)" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+        <line x1="24" y1="19" x2="24" y2="41" stroke="var(--marrom-escuro)" stroke-width="2.5"/>
+      </svg>
+      <h1 style="margin-bottom: 0.2rem; font-size: 1.6rem;">Livraria Oliveira</h1>
+      <p style="color: var(--marrom-claro); font-size: 0.9rem;">Acesse sua conta</p>
+    </div>
       <form action="" method="POST" onsubmit="prepararEndereco()" enctype="multipart/form-data">
 
       <?php if ($editando): ?>
@@ -157,8 +164,7 @@ $lista_usuarios = mysqli_query($conexao, "SELECT * FROM usuario ORDER BY id_usua
                 required />
               </div>
             </div>
-          </div>
-
+            <br>
             
             
             <div class="grid-form">
@@ -195,15 +201,21 @@ $lista_usuarios = mysqli_query($conexao, "SELECT * FROM usuario ORDER BY id_usua
               <input type="hidden" id="endereco_completo" name="endereco" value="" />
             </div>
 
-        </div> <div class="form-footer" style="margin-top: 3rem; border-top: 1px solid var(--bg-input); padding-top: 1.5rem;">
-          <a class="link-rodape" href="login.html">Já tem uma conta? Faça login</a>
-          <button type="submit" class="btn-primario" style="min-width: 200px;">Finalizar Cadastro</button>
+        <div class="form-footer" style="margin-top: 3rem; border-top: 1px solid var(--bg-input); padding-top: 1.5rem;">
+          <button 
+          type="submit" 
+          class="btn-primario" 
+          style="width: 100%;">Finalizar Cadastro</button>
         </div>
 
       </form>
+      <div style="margin-top: 2rem; text-align: center; display: flex; flex-direction: column; gap: 0.8rem;">
+            <a class="link-rodape" href="login.php">Já tem uma conta? Faça login</a>
+            <a href="loja.php" class="link-rodape" style="font-size: 0.85rem; opacity: 0.8;">← Visitar a loja sem login</a>
+          </div>
     </div>
 
-  </main>
+      </div>
 
   <script>
     function mostrarPreview(event) {

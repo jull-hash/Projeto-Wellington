@@ -1,7 +1,7 @@
 <?php
 if (isset($_SESSION["id_usuario"])) {
     if ($_SESSION["usuario_tipo"] == 'adm'){
-        header("Location: admin/cadastro_libro.php");
+        header("Location: admin/cadastro_livro.php");
         }
     }else{
         header("Location: login.php");
@@ -11,9 +11,7 @@ if (isset($_SESSION["id_usuario"])) {
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Usuário — Projeto SENAI</title>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -22,26 +20,19 @@ if (isset($_SESSION["id_usuario"])) {
 
     <body class="bg-gray-100 min-h-screen flex">
     <aside class="sidebar">
-        <div class="sidebar-brand">
-            <h1>Projeto SENAI</h1>
-            <span>Painel de controle</span>
-        </div>
-        <nav>
-            <div class="nav-section-label">Menu</div>
-            <a href="cadastro_cliente.php"  class="nav-link"><span class="nav-icon">🤑</span> Cadastrar Cliente</a>
-            <a href="cadastro_usuario.php"  class="nav-link active"><span class="nav-icon">👤</span> Cadastrar Usuário</a>
-            <a href="cadastro_produtos.php" class="nav-link"><span class="nav-icon">📋</span> Cadastrar Produtos</a>
-            <div class="nav-section-label" style="margin-top:12px;">Sessão</div>
-            <a href="logout.php" class="nav-link"><span class="nav-icon">🚪</span> Sair</a>
-        </nav>
-        <div class="sidebar-user">
-            <div class="user-avatar">👤</div>
-            <div class="user-info">
-                <div class="label">Logado como</div>
-                <div class="name"><?php echo htmlspecialchars($_SESSION["nome_usuario"]); ?></div>
-            </div>
-        </div>
-    </aside>
+    <div class="logo-container">
+      <h2>Livraria<br>Oliveira</h2>
+    </div>
+    <nav class="menu-nav">
+      <a href="loja.php">Início / Loja</a>
+      <a href="#">Meus Pedidos</a>
+      <a href="meu_perfil.php">Meu Perfil</a>
+      <p style="font-size: 0.8rem; font-weight: 700; color: var(--marrom-claro); margin: 1rem 0 0.2rem 1rem; text-transform: uppercase;">Categorias</p>
+      <a href="#">Ficção</a>
+      <a href="#">Terror</a>
+      <a href="logout.php" style="color: #c62828; margin-top: 2rem;">Sair</a>
+</nav>
+  </aside>
 
 </body>
 </html>

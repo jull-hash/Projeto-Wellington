@@ -10,9 +10,9 @@ session_start();
 // Se já está logado, redireciona para o dashboard
 if (isset($_SESSION["id_usuario"])) {
     if ($_SESSION["usuario_tipo"] == 'user'){
-    header("Location: cadastro_usuario.php");
+    header("Location: loja.php");
     }else if ($_SESSION["usuario_tipo"] == 'adm'){
-    header("Location: admin/cadastro_libro.php");
+    header("Location: admin/cadastro_livro.php");
     }exit;
 }
 
@@ -47,9 +47,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             // Redirecionar para o dashboard
             if ($_SESSION["usuario_tipo"] == 'user'){
-            header("Location: cadastro_usuario.php");
+            header("Location: loja.php");
             }else if ($_SESSION["usuario_tipo"] == 'adm'){
-            header("Location: admin/cadastro_libro.php");
+            header("Location: admin/cadastro_livro.php");
             }exit;
         } else {
             $erro = "Email ou senha incorretos.";
