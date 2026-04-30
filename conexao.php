@@ -3,6 +3,7 @@ $servidor = "localhost";
 $usuario  = "root";
 $senha    = "";
 $banco    = "papelaria";
+$idVisual = 0;
 
 
 

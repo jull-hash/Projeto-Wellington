@@ -97,7 +97,9 @@ $results = mysqli_query($conexao, $sqlcurform);
 
 <div class="p-6 flex-1">
 
-            <!-- MENSAGEM DE SUCESSO -->
+
+  <main class="main-content">
+    <!-- MENSAGEM DE SUCESSO -->
             <?php if (!empty($sucesso)): ?>
               <div class="msg-alerta msg-sucesso">
                 <?php echo $sucesso; ?>
@@ -112,10 +114,6 @@ $results = mysqli_query($conexao, $sqlcurform);
 
         </div>
 
-        <
- 
-
-  <main class="main-content">
     <div class="card-formulario">
       <h1>Adicionar Novo Livro</h1>
       <form action="" method="POST" enctype="multipart/form-data">
