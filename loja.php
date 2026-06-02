@@ -4,6 +4,22 @@ session_start();
 require_once "include/menu_user.php";
 require_once "conexao.php";
 
+if (isset($_GET["Terror"])){
+  $sql = "SELECT * from livro WHERE genero = 'Terror'";
+  $livros = mysqli_query($conexao, $sql);
+}else if (isset($_GET["Ficção"])){
+  $sql = "SELECT * from livro WHERE genero = 'Ficção'";
+  $livros = mysqli_query($conexao, $sql);
+}else{
+$sql = "SELECT id_livro, nome_livro, autor, publicado, genero, preco_livro, imagem_livro, descricao_livro, quantidade_livro, livro_criado_em FROM livro ORDER BY id_livro  DESC";
+$livros = mysqli_query($conexao, $sql);
+}
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+$mens= "Livro adicionado ao carrinho";
+}
+
+
+
 // SELECT 
 //     usuario.nome_usuario, 
 //     livro.titulo_livro, 
@@ -12,9 +28,7 @@ require_once "conexao.php";
 // JOIN usuario ON pedido.user_id = usuario.id_usuario
 // JOIN livro ON pedido.livro_id = livro.id_livro;
 
-$sqlped = "SELECT usuario.nome_usuario, livro.titulo_livro, pedido.id_pedido FROM pedido JOIN usuario ON pedido.user_id = usuario.id_usuario JOIN livro ON pedido.livro_id = livro.id_livro";
-$sql = "SELECT id_livro, nome_livro, autor, publicado, genero, preco_livro, imagem_livro, descricao_livro, quantidade_livro, livro_criado_em FROM livro ORDER BY id_livro  DESC";
-$livros = mysqli_query($conexao, $sql);
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -32,6 +46,14 @@ $livros = mysqli_query($conexao, $sql);
       <h1>Explore nosso acervo</h1>
       <p style="color: var(--marrom-claro);">Escolha suas próximas histórias favoritas.</p>
     </div>
+    <div class="p-6 flex-1">
+    <?php if (!empty($mens)): ?>
+            <div class="bg-green-50 border border-green-300 text-green-700 rounded-lg p-3 mb-5 flex items-center gap-2 text-sm">
+                <span class="font-bold text-base">✓</span>
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
+                <?php echo $mens; ?>
+            <?php endif; ?>
+</div>
     <?php  while ($u = mysqli_fetch_assoc($livros)): ?>
     <div class="vitrine-livros">
       <div class="card-produto">
@@ -46,7 +68,10 @@ $livros = mysqli_query($conexao, $sql);
         <p class="titulo-livro"><?php echo $u["nome_livro"]; ?></p>
         <p class="autor-livro"><?php echo $u["autor"]; ?></p>
         <p class="preco-livro"><?php echo "R$".$u["preco_livro"]; ?></p>
-        <button class="btn-comprar">Comprar</button>
+
+          <form action="" method="POST">
+        <button type = "submit" class="btn-comprar">Comprar</button>
+          </form>
       </div>
     </div>
     <?php endwhile; ?>

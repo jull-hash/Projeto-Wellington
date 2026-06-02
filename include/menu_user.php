@@ -28,8 +28,8 @@ if (isset($_SESSION["id_usuario"])) {
       <a href="#">Meus Pedidos</a>
       <a href="meu_perfil.php">Meu Perfil</a>
       <p style="font-size: 0.8rem; font-weight: 700; color: var(--marrom-claro); margin: 1rem 0 0.2rem 1rem; text-transform: uppercase;">Categorias</p>
-      <a href="#">Ficção</a>
-      <a href="#">Terror</a>
+      <a href="loja.php?Ficção">Ficção</a>
+      <a href="loja.php?Terror">Terror</a>
       <a href="logout.php" style="color: #c62828; margin-top: 2rem;">Sair</a>
 </nav>
   </aside>
