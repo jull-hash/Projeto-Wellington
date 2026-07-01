@@ -4,11 +4,9 @@ session_start();
 require_once "include/menu_user.php";
 require_once "conexao.php";
 
-if (isset($_GET["Terror"])){
-  $sql = "SELECT * from livro WHERE genero = 'Terror'";
-  $livros = mysqli_query($conexao, $sql);
-}else if (isset($_GET["Ficção"])){
-  $sql = "SELECT * from livro WHERE genero = 'Ficção'";
+if (isset($_GET["genero"])){
+  $gen = $_GET["genero"];
+  $sql = "SELECT * from livro WHERE genero = '$gen'";
   $livros = mysqli_query($conexao, $sql);
 }else{
 $sql = "SELECT id_livro, nome_livro, autor, publicado, genero, preco_livro, imagem_livro, descricao_livro, quantidade_livro, livro_criado_em FROM livro ORDER BY id_livro  DESC";
@@ -18,8 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 $mens= "Livro adicionado ao carrinho";
 }
 
-
-
 // SELECT 
 //     usuario.nome_usuario, 
 //     livro.titulo_livro, 
@@ -27,7 +23,6 @@ $mens= "Livro adicionado ao carrinho";
 // FROM pedido
 // JOIN usuario ON pedido.user_id = usuario.id_usuario
 // JOIN livro ON pedido.livro_id = livro.id_livro;
-
 
 ?>
 <!DOCTYPE html>
@@ -46,6 +41,15 @@ $mens= "Livro adicionado ao carrinho";
       <h1>Explore nosso acervo</h1>
       <p style="color: var(--marrom-claro);">Escolha suas próximas histórias favoritas.</p>
     </div>
+    <form action="" type="POST">
+  <input type="radio" id="Terror" name="genero" value="Terror">
+    <label for="Terror">Terror</label><br>
+  <input type="radio" id="Ficção" name="genero" value="Ficção">
+    <label for="Ficção">Ficção</label><br>
+  <input type="radio" id="Fantasia" name="genero" value="Fantasia">
+    <label for="Fantasia">Fantasia</label><br>
+  <input type="submit">
+</form> 
     <div class="p-6 flex-1">
     <?php if (!empty($mens)): ?>
             <div class="bg-green-50 border border-green-300 text-green-700 rounded-lg p-3 mb-5 flex items-center gap-2 text-sm">
@@ -69,7 +73,7 @@ $mens= "Livro adicionado ao carrinho";
         <p class="autor-livro"><?php echo $u["autor"]; ?></p>
         <p class="preco-livro"><?php echo "R$".$u["preco_livro"]; ?></p>
 
-          <form action="" method="POST">
+          <form action="loja.php?buy=<?=$u["id_livro"]?>" method="POST">
         <button type = "submit" class="btn-comprar">Comprar</button>
           </form>
       </div>

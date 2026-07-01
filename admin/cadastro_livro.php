@@ -138,10 +138,10 @@ $results = mysqli_query($conexao, $sql);
 
         <div class="area-upload">
           <input type="file" name="imagem_livro" accept="image/*" onchange="mostrarPreview(event)" required />
-          <div class="conteudo-upload" id="texto-upload">
-            <span style="font-size: 0.9rem; font-weight: 700;"><?= $editando ? "Nova Imagem" : "Adicionar Imagem" ?></span>
+          <div class="conteudo-upload" id="texto-upload" style="display: <?= $editando ? 'none' : 'block' ?>;">
+            <span style="font-size: 0.9rem; font-weight: 700;"><?= $editando ? "" : "Adicionar Imagem" ?></span>
           </div>
-          <img id="preview" class="preview-img" alt="Capa" />
+          <img id="preview" class="preview-img" alt="Capa" src="<?= $editando ? '../uploads/capas/' . $editando['imagem_livro'] : '' ?>" style="display: <?= $editando ? 'block' : 'none' ?>;" />
         </div>
 
         <p class="label-secao">📖 Informações do Livro</p>
@@ -160,7 +160,11 @@ $results = mysqli_query($conexao, $sql);
           </div>
           <div class="grupo-campo">
             <label>genero</label>
-            <input type="text" value="<?= $editando["genero"] ?? "" ?>" name="genero" placeholder="Ex: Alta Fantasia" required />
+            <select name="genero">
+              <?php  while ($u = mysqli_fetch_assoc($results)): ?>
+              <option value="<?=$u["genero"]?>" required><?=$u["genero"]?></option>
+              <?php endwhile; ?>
+              </select> 
           </div>
           <div class="grupo-campo">
             <label>descricao</label>
